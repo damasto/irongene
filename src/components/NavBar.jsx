@@ -8,7 +8,8 @@ import {
   } from '@mui/material';
   import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
   import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-  
+  import {Link as RouterLink} from "react-router-dom"
+
   export default function Header() {
     return (
       <AppBar
@@ -41,9 +42,12 @@ import {
   
           {/* Right: Icons */}
           <Box sx={{ display: 'flex', gap: 2 }}>
+            <RouterLink to="/signin">
             <IconButton color="inherit">
               <AccountCircleIcon />
             </IconButton>
+            </RouterLink>
+    
             <IconButton color="inherit">
               <ShoppingCartIcon />
             </IconButton>
