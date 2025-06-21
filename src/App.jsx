@@ -8,6 +8,7 @@ import NavBar from './components/NavBar'
 import Footer from './components/Footer'
 import HomePage from './pages/HomePage'
 import ClinicsPage from './pages/ClinicsPage'
+import BookingPage from './pages/BookingPage'
 
 
 
@@ -20,6 +21,8 @@ function App() {
    <Routes>
     <Route path="/" element={<HomePage/>}></Route>
     <Route path="/clinics" element={<ClinicsPage/>}></Route>
+    <Route path="/clinics/:clinicSlug" element={<ClinicsPage/>}></Route>
+    <Route path="/booking/:clinicSlug" element={<BookingPage/>}></Route>
     <Route path="/signin" element={<SignUp/>}></Route>
    </Routes>
    <Footer/>

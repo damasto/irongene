@@ -7,7 +7,7 @@ import api from '../assets/api/axios';
 
 export default function ClinicsPage() {
 
-    const [clinics, setClinics] = useState(null);
+    const [clinics, setClinics] = useState([]);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(true)
 
@@ -15,7 +15,8 @@ export default function ClinicsPage() {
         try {
             setLoading(true);
             const res = await api.get("/api/clinics");
-            setClinics(res.data)
+            setClinics(res.data);
+            console.log("clinics: ", clinics)
         } catch (err) {
             setError(err.message)
         } finally {
@@ -24,8 +25,12 @@ export default function ClinicsPage() {
     }
 
     useEffect(() => {
-        getClinics()
-    }, [])
+        getClinics();
+    }, []);
+
+    useEffect(() => {
+        console.log("clinic:", clinics)
+    }, [clinics])
 
     if (loading) return <div>Loading…</div>;
     if (error) return <div>Error: {error.message}</div>;
