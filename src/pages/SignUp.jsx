@@ -7,6 +7,8 @@ import {
   Typography,
   Link,
 } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import api from "../api/axios";
 
 export default function SignUp({ onSwitchToSignIn }) {
   const [formData, setFormData] = useState({
@@ -15,6 +17,8 @@ export default function SignUp({ onSwitchToSignIn }) {
     password: "",
   });
 
+  const navigate = useNavigate();
+
   const handleChange = (e) => {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
@@ -22,10 +26,22 @@ export default function SignUp({ onSwitchToSignIn }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("Sign up with", formData);
+
+    createUser();
   };
 
   const createUser = async () => {
-    const res = api.post("/api/user")
+
+    if (formData.name.trim() && formData.email.trim() && formData.password.trim()) {
+      try{
+        await api.post("/auth/signup", formData);
+        navigate("/signin");
+
+      } catch(err) {
+        console.log(err)
+      }
+    }
+    
   }
 
   return (
