@@ -39,11 +39,17 @@ export default function BookingPage() {
 
   };
 
-  const bookAppointment = () => {
+  const bookAppointment = async () => {
+
+    if(!_id || !newBooking) {
+        console.log("Missing booking data")
+        return
+    }
+
     try {
-        api.post(`/booking/${_id}`, newBooking)
+        await api.post(`/booking/${_id}`, newBooking)
     } catch(err) {
-        console.log(err)
+        console.error("Error: ", err)
     }
   };
 

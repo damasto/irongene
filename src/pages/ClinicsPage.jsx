@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Box } from '@mui/material';
 import ClinicCard from '../components/ClinicCard';
-import api from '../assets/api/axios';
+import api from '../api/axios';
 
 
 

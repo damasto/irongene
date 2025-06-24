@@ -3,17 +3,17 @@ import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css' 
 import { Route, Routes } from 'react-router-dom'
-import SignUp from './pages/SignUp'
 import NavBar from './components/NavBar'
 import Footer from './components/Footer'
 import HomePage from './pages/HomePage'
 import ClinicsPage from './pages/ClinicsPage'
 import BookingPage from './pages/BookingPage'
+import SignIn from './pages/SignIn'
+import SignUp from './pages/SignUp'
 
 
 
 function App() {
-  const [count, setCount] = useState(0)
 
   return (
     <>
@@ -23,7 +23,8 @@ function App() {
     <Route path="/clinics" element={<ClinicsPage/>}></Route>
     <Route path="/clinics/:clinicSlug" element={<ClinicsPage/>}></Route>
     <Route path="/booking/:clinicSlug" element={<BookingPage/>}></Route>
-    <Route path="/signin" element={<SignUp/>}></Route>
+    <Route path="/signup" element={<SignUp/>}></Route>
+    <Route path="/signin" element={<SignIn/>}></Route>
    </Routes>
    <Footer/>
     </>
