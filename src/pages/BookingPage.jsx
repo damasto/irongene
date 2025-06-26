@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import {
   Box,
   Button,
@@ -11,14 +11,19 @@ import {
 import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import api from "../api/axios";
+import { AuthContext } from "../context/auth.context";
 
 const timeSlots = ["09:00-12:00", "13:00-16:00", "16:00-19:00"];
 
 export default function BookingPage() {
   const [date, setDate] = useState(null);
   const [timeSlot, setTimeSlot] = useState("");
-  const {_id} = useParams();
+  const { _id } = useParams();
+  const { storeToken, authenticateUser } = useContext(AuthContext);
+  const navigate = useNavigate();
+  
 
   // Disable weekends
   const disableWeekends = (date) => {
@@ -30,26 +35,30 @@ export default function BookingPage() {
     e.preventDefault();
     console.log("Selected Date:", date?.format("DD-MM-YYYY"));
     console.log("Selected Time Slot:", timeSlot);
-    const newBooking = {
-        date: date,
-        timeSlot: timeSlot
-    };
 
     bookAppointment();
 
   };
 
+  
   const bookAppointment = async () => {
 
-    if(!_id || !newBooking) {
-        console.log("Missing booking data")
-        return
+    const newBooking = {
+      date: date,
+      timeSlot: timeSlot
+    };
+
+    console.log("id:", _id, "newBooking: ", newBooking)
+    if (!_id || !newBooking) {
+      console.log("Missing booking data")
+      return
     }
 
     try {
-        await api.post(`/booking/${_id}`, newBooking)
-    } catch(err) {
-        console.error("Error: ", err)
+      const res = await api.post(`api/bookings/${_id}`, newBooking);
+      navigate("/")
+    } catch (err) {
+      console.error("Error: ", err)
     }
   };
 

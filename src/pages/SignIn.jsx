@@ -41,18 +41,14 @@ export default function SignIn({ onSwitchToSignUp }) {
       return
     }
 
-    api.post("/auth/login", reqBody)
-      .then((res) => {
-        // Save the token in the localStorage.      
-        storeToken(res.data.authToken);
-        
-        // Verify the token by sending a request 
-        // to the server's JWT validation endpoint. 
-        authenticateUser();                     // <== ADD
-        navigate('/');
-
-      })
-      .catch((err) => console.log(err)) 
+    try {
+      const res = await api.post("/auth/login", reqBody);
+      storeToken(res.data.authToken);
+      authenticateUser();
+      navigate("/")
+    } catch (err) {
+      console.log(err)
+    }
     
   }
 
