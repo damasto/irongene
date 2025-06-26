@@ -10,6 +10,8 @@ import ClinicsPage from './pages/ClinicsPage'
 import BookingPage from './pages/BookingPage'
 import SignIn from './pages/SignIn'
 import SignUp from './pages/SignUp'
+import IsAnon from './components/isAnon'
+import IsPrivate from './components/isPrivate'
 
 
 
@@ -22,9 +24,9 @@ function App() {
     <Route path="/" element={<HomePage/>}></Route>
     <Route path="/clinics" element={<ClinicsPage/>}></Route>
     <Route path="/clinics/:clinicSlug" element={<ClinicsPage/>}></Route>
-    <Route path="/booking/:_id" element={<BookingPage/>}></Route>
-    <Route path="/signup" element={<SignUp/>}></Route>
-    <Route path="/signin" element={<SignIn/>}></Route>
+    <Route path="/booking/:_id" element={<IsPrivate><BookingPage/></IsPrivate>}></Route>
+    <Route path="/signup" element={<IsAnon><SignUp/></IsAnon>}></Route>
+    <Route path="/signin" element={<IsAnon><SignIn/></IsAnon>}></Route>
    </Routes>
    <Footer/>
     </>
