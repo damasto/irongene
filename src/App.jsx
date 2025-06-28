@@ -12,6 +12,7 @@ import SignIn from './pages/SignIn'
 import SignUp from './pages/SignUp'
 import IsAnon from './components/isAnon'
 import IsPrivate from './components/isPrivate'
+import ProfilePage from './pages/ProfilePage'
 
 
 
@@ -25,8 +26,10 @@ function App() {
     <Route path="/clinics" element={<ClinicsPage/>}></Route>
     <Route path="/clinics/:clinicSlug" element={<ClinicsPage/>}></Route>
     <Route path="/booking/:_id" element={<IsPrivate><BookingPage/></IsPrivate>}></Route>
+    <Route path="/profile" element={<IsPrivate><ProfilePage/></IsPrivate>}></Route>
     <Route path="/signup" element={<IsAnon><SignUp/></IsAnon>}></Route>
     <Route path="/signin" element={<IsAnon><SignIn/></IsAnon>}></Route>
+    
    </Routes>
    <Footer/>
     </>

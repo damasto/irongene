@@ -21,7 +21,6 @@ export default function BookingPage() {
   const [date, setDate] = useState(null);
   const [timeSlot, setTimeSlot] = useState("");
   const { _id } = useParams();
-  const { storeToken, authenticateUser } = useContext(AuthContext);
   const navigate = useNavigate();
   
 

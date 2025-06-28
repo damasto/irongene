@@ -46,7 +46,7 @@ export default function NavBar() {
 
         {/* Right: Icons */}
         <Box sx={{ display: 'flex', gap: 2 }}>
-          <RouterLink to="/signin">
+          <RouterLink to="/profile">
             <IconButton color="inherit">
               <AccountCircleIcon />
             </IconButton>
