@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import {
     Box,
     TextField,
@@ -8,13 +8,20 @@ import {
     Grid,
 } from '@mui/material';
 import api from '../api/axios';
+import { VerifyInputContext } from '../context/inputVerification.context';
+import { useNavigate } from 'react-router-dom';
 
-export default function ChangeEmailForm() {
-    const [formData, setFormData] = useState({
+export default function ChangePwdForm() {
+
+    const formDataModel = {
         currentPassword: '',
         newPassword: '',
         confirmNewPassword: '',
-    });
+    }
+    const [formData, setFormData] = useState(formDataModel);
+    const { currentPassword, newPassword, confirmNewPassword } = formData;
+    const { verifyPassword } = useContext(VerifyInputContext);
+    const navigate = useNavigate()
 
     const handleChange = (e) => {
         setFormData((prev) => ({
@@ -26,12 +33,36 @@ export default function ChangeEmailForm() {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        if (formData.currentPassword.trim() && formData.newPassword.trim() && formData.confirmNewPassword.trim()) {
 
+        if (currentPassword.trim() && newPassword.trim() && confirmNewPassword.trim()) {
+            if (newPassword === confirmNewPassword) {
+                if (verifyPassword(newPassword)) {
+                    changePassword();
+                    navigate("/profile")
+                } else {
+                    return
+                }
+            } else {
+                console.log("Passwords do not match!")
+            }
+        } else {
+            console.log("Please fill out all fields")
         }
-        console.log('Form submitted:', formData);
+        
 
     };
+
+    const changePassword = async () => {
+        const changedPwd = {
+            currentPassword: currentPassword,
+            newPassword: newPassword
+        }
+        try {
+            const res = await api.put("/api/users/profile/password", changedPwd)
+        } catch (err) {
+            console.log(err)
+        }
+    }
 
     return (
         <Paper
@@ -47,12 +78,12 @@ export default function ChangeEmailForm() {
                 flexDirection: "column",
                 justifyContent: "flex-end",
                 alignItems: "flex-start",
-                margin:0,
+                margin: 0,
 
             }}
         >
             <Typography variant="h5" gutterBottom>
-                Change Email
+                Change Password
             </Typography>
 
             <Box
@@ -79,7 +110,7 @@ export default function ChangeEmailForm() {
                             fullWidth
                             label="New password"
                             name="newPassword"
-                            type="text"
+                            type="password"
                             value={formData.newPassword}
                             onChange={handleChange}
                             variant="outlined"
@@ -91,7 +122,7 @@ export default function ChangeEmailForm() {
                             fullWidth
                             label="Confirm New Password"
                             name="confirmNewPassword"
-                            type="text"
+                            type="password"
                             value={formData.confirmNewPassword}
                             onChange={handleChange}
                             variant="outlined"

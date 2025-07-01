@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import {
     Box,
     TextField,
@@ -8,6 +8,7 @@ import {
     Grid,
 } from '@mui/material';
 import api from '../api/axios';
+import { VerifyInputContext } from '../context/inputVerification.context';
 
 export default function ChangeEmailForm() {
     const [formData, setFormData] = useState({
@@ -15,6 +16,9 @@ export default function ChangeEmailForm() {
         confirmNewEmail: '',
         password: '',
     });
+    const {newEmail, confirmNewEmail, password} = formData
+
+    const {verifyEmail} = useContext(VerifyInputContext)
 
     const handleChange = (e) => {
         setFormData((prev) => ({
@@ -26,12 +30,32 @@ export default function ChangeEmailForm() {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        if (formData.newEmail.trim() && formData.confirmNewEmail.trim() && formData.password.trim()) {
-
+        if (newEmail.trim() && confirmNewEmail.trim() && password.trim()) {
+            if(verifyEmail(newEmail) && verifyEmail(confirmNewEmail)) {
+                if(newEmail !== confirmNewEmail) {
+                    console.error({
+                        message: "Emails do not match!"
+                    })
+                    return
+                }
+                changeEmail();
+            }
         }
-        console.log('Form submitted:', formData);
-
     };
+
+    const changeEmail = async () => {
+        const updateEmail = {
+            newEmail: newEmail,
+            enteredPassword: password
+        }
+
+        try {
+            const res =  await api.put("api/users/profile/email", updateEmail);
+            console.log('Form submitted:', updateEmail);
+        } catch(err) {
+            console.log(err)
+        }
+    }
 
     return (
         <Paper

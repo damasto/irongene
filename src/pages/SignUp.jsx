@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   Box,
   Button,
@@ -9,12 +9,17 @@ import {
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import api from "../api/axios";
+import { VerifyInputContext } from "../context/inputVerification.context";
 
 export default function SignUp({ onSwitchToSignIn }) {
+
+  const {verifyEmail, verifyPassword} = useContext(VerifyInputContext)
   const [formData, setFormData] = useState({
-    name: "",
+    firstName: "",
+    lastName: "",
     email: "",
     password: "",
+    confirmPassword: ""
   });
 
   const navigate = useNavigate();
@@ -31,14 +36,22 @@ export default function SignUp({ onSwitchToSignIn }) {
   };
 
   const createUser = async () => {
+    const {firstName, lastName, email, password, confirmPassword} = formData
+    if (firstName.trim() && lastName.trim() && email.trim() && password.trim()) {
+      if(verifyEmail(email) && verifyPassword(password)) {
+        if(password !== confirmPassword) {
+          console.log("passwords do not match")
+          return
+        }
 
-    if (formData.name.trim() && formData.email.trim() && formData.password.trim()) {
-      try{
-        await api.post("/auth/signup", formData);
-        navigate("/signin");
-
-      } catch(err) {
-        console.log(err)
+        try{
+          await api.post("/auth/signup", formData);
+          navigate("/signin");
+        } catch(err) {
+          console.log(err)
+        } 
+      } else {
+        return
       }
     }
     
@@ -63,10 +76,18 @@ export default function SignUp({ onSwitchToSignIn }) {
       <Box component="form" onSubmit={handleSubmit} display="flex" flexDirection="column" gap={3}>
         <TextField
           label="Name"
-          name="name"
+          name="firstName"
           variant="outlined"
           fullWidth
-          value={formData.name}
+          value={formData.firstName}
+          onChange={handleChange}
+        />
+        <TextField
+          label="Last Name"
+          name="lastName"
+          variant="outlined"
+          fullWidth
+          value={formData.lastName}
           onChange={handleChange}
         />
         <TextField
@@ -84,6 +105,15 @@ export default function SignUp({ onSwitchToSignIn }) {
           variant="outlined"
           fullWidth
           value={formData.password}
+          onChange={handleChange}
+        />
+        <TextField
+          label="Confirm Password"
+          name="confirmPassword"
+          type="password"
+          variant="outlined"
+          fullWidth
+          value={formData.confirmPassword}
           onChange={handleChange}
         />
         <Button type="submit" variant="contained" fullWidth>
