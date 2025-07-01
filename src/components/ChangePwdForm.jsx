@@ -11,7 +11,7 @@ import api from '../api/axios';
 import { VerifyInputContext } from '../context/inputVerification.context';
 import { useNavigate } from 'react-router-dom';
 
-export default function ChangePwdForm({setMessage, toggleDialog, hideForm}) {
+export default function ChangePwdForm({ setMessage, toggleDialog, hideForm }) {
 
     const formDataModel = {
         currentPassword: '',
@@ -21,6 +21,7 @@ export default function ChangePwdForm({setMessage, toggleDialog, hideForm}) {
     const [formData, setFormData] = useState(formDataModel);
     const { currentPassword, newPassword, confirmNewPassword } = formData;
     const { verifyPassword } = useContext(VerifyInputContext);
+    const [errorMessage, setErrorMessage] = useState(null)
     const navigate = useNavigate()
 
     const handleChange = (e) => {
@@ -33,30 +34,40 @@ export default function ChangePwdForm({setMessage, toggleDialog, hideForm}) {
     const handleSubmit = (e) => {
         e.preventDefault();
 
+        const passwordChecks = (() => {
+            if (!currentPassword.trim() || !newPassword.trim() || !confirmNewPassword.trim()) {
+                setErrorMessage("Please fill out all fields!");
+                return false
+            };
 
-        if (currentPassword.trim() && newPassword.trim() && confirmNewPassword.trim()) {
-            if (newPassword === confirmNewPassword) {
-                if (verifyPassword(newPassword)) {
-                    changePassword();
-                    setMessage("Password has been successfully changed");
-                    toggleDialog(true)
-                    setTimeout(() => {
-                        toggleDialog(false)
-                        setMessage("");
-                    }, 3000);
-                    hideForm();
-    
-                } else {
-                    return
-                }
-            } else {
-                console.log("Passwords do not match!")
+            if (newPassword !== confirmNewPassword) {
+                setErrorMessage("Passwords do not match")
+                return false
+            };
+
+            if (currentPassword === newPassword) {
+                setErrorMessage("Please select a password different from your current one")
+                return false
+            };
+
+            if (!verifyPassword(newPassword)) {
+                setErrorMessage("Password must have at least 6 characters and contain at least one number, one lowercase and one uppercase letter.")
+                return false
             }
-        } else {
-            console.log("Please fill out all fields")
-        }
-        
 
+            return true
+        })();
+
+        if (passwordChecks) {
+            changePassword();
+            setMessage("Password has been successfully changed");
+            toggleDialog(true)
+            setTimeout(() => {
+                toggleDialog(false)
+                setMessage("");
+            }, 3000);
+            hideForm();
+        }
     };
 
     const changePassword = async () => {
@@ -135,6 +146,7 @@ export default function ChangePwdForm({setMessage, toggleDialog, hideForm}) {
                             variant="outlined"
                         />
                     </Grid>
+                    {errorMessage && <Typography variant="body2" color="error">{errorMessage}</Typography>}
 
                     <Grid item xs={12} sm={8}>
                         <Button type="submit" variant="contained" color="primary" fullWidth>

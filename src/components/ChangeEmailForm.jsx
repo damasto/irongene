@@ -10,15 +10,15 @@ import {
 import api from '../api/axios';
 import { VerifyInputContext } from '../context/inputVerification.context';
 
-export default function ChangeEmailForm({setMessage, toggleDialog, hideForm}) {
+export default function ChangeEmailForm({ setMessage, toggleDialog, hideForm, email }) {
     const [formData, setFormData] = useState({
         newEmail: '',
         confirmNewEmail: '',
         password: '',
     });
-    const {newEmail, confirmNewEmail, password} = formData
-
-    const {verifyEmail} = useContext(VerifyInputContext)
+    const [errorMessage, setErrorMessage] = useState(null)
+    const { newEmail, confirmNewEmail, password } = formData
+    const { verifyEmail } = useContext(VerifyInputContext)
 
     const handleChange = (e) => {
         setFormData((prev) => ({
@@ -30,23 +30,39 @@ export default function ChangeEmailForm({setMessage, toggleDialog, hideForm}) {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        if (newEmail.trim() && confirmNewEmail.trim() && password.trim()) {
-            if(verifyEmail(newEmail) && verifyEmail(confirmNewEmail)) {
-                if(newEmail !== confirmNewEmail) {
-                    console.error({
-                        message: "Emails do not match!"
-                    })
-                    return
-                }
-                changeEmail();
-                setMessage("Email has been changed successfully");
-                toggleDialog(true);
-                setTimeout(() => {
-                    toggleDialog(false)
-                    setMessage("")
-                }, 3000)
-                hideForm();
+        const emailCheck = (() => {
+            if (!newEmail.trim() || !confirmNewEmail.trim() | !password.trim()) {
+                setErrorMessage("Please fill out all fields")
+                return false
+            };
+
+            if(email === newEmail) {
+                setErrorMessage("Please choose an email different from your current one")
+                return false
             }
+
+            if (newEmail !== confirmNewEmail) {
+                setErrorMessage("Emails do not match!")
+                return false
+            };
+
+            if (!verifyEmail(newEmail)) {
+                setErrorMessage("Provide a valid email address.")
+                return false
+            };
+
+            return true
+        })();
+
+        if (emailCheck) {
+            changeEmail();
+            setMessage("Email has been changed successfully");
+            toggleDialog(true);
+            setTimeout(() => {
+                toggleDialog(false)
+                setMessage("")
+            }, 3000)
+            hideForm();
         }
     };
 
@@ -57,9 +73,9 @@ export default function ChangeEmailForm({setMessage, toggleDialog, hideForm}) {
         }
 
         try {
-            const res =  await api.put("api/users/profile/email", updateEmail);
+            const res = await api.put("api/users/profile/email", updateEmail);
             console.log('Form submitted:', updateEmail);
-        } catch(err) {
+        } catch (err) {
             console.log(err)
         }
     }
@@ -78,7 +94,7 @@ export default function ChangeEmailForm({setMessage, toggleDialog, hideForm}) {
                 flexDirection: "column",
                 justifyContent: "flex-end",
                 alignItems: "flex-start",
-                margin:0,
+                margin: 0,
 
             }}
         >
@@ -128,7 +144,7 @@ export default function ChangeEmailForm({setMessage, toggleDialog, hideForm}) {
                             variant="outlined"
                         />
                     </Grid>
-
+                    {errorMessage && <Typography variant="body2" color="error">{errorMessage}</Typography>}
                     <Grid item xs={12} sm={8}>
                         <Button type="submit" variant="contained" color="primary" fullWidth>
                             Save Changes

@@ -9,8 +9,7 @@ function VerifyInputProviderWrapper(props) {
     const verifyEmail = (email) => {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
         if (!emailRegex.test(email)) {
-            console.error({ message: "Provide a valid email address." });
-            return;
+            return false;
         } else {
             return true
         }
@@ -19,10 +18,6 @@ function VerifyInputProviderWrapper(props) {
     const verifyPassword = (password) => {
         const passwordRegex = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/;
         if (!passwordRegex.test(password)) {
-            console.error({
-                message:
-                    "Password must have at least 6 characters and contain at least one number, one lowercase and one uppercase letter.",
-            });
             return
         } else {
             return true

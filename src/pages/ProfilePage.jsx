@@ -22,6 +22,7 @@ export default function ProfilePage() {
     const [showDialog, setShowDialog] = useState(false)
     const [showConfirmation, setShowConfirmation] = useState(false)
     const [confirmationMessage, setConfirmationMessage] = useState("")
+    const [errorMessage, setErrorMessage] = useState(null)
     const navigate = useNavigate();
     const navbarHeight = 74;
 
@@ -120,6 +121,8 @@ export default function ProfilePage() {
                             <Button onClick={toggleEmailForm}>Change email</Button>
                             {emailForm &&
                                 <ChangeEmailForm
+                                    email = {profileData.email}
+                                    setErrorMessage={(error) => setErrorMessage(error)}
                                     setMessage={(text) => setConfirmationMessage(text)}
                                     toggleDialog={(status) => setShowConfirmation(status)}
                                     hideForm={toggleEmailForm}
@@ -128,6 +131,7 @@ export default function ProfilePage() {
                         <Button onClick={togglePasswordForm}>Change Password</Button>
                         {changePasswordForm &&
                             <ChangePwdForm
+                                setErrorMessage={(error) => setErrorMessage(error)}
                                 setMessage={(text) => setConfirmationMessage(text)}
                                 toggleDialog={(status) => setShowConfirmation(status)}
                                 hideForm={togglePasswordForm}
