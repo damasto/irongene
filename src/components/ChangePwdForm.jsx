@@ -11,7 +11,7 @@ import api from '../api/axios';
 import { VerifyInputContext } from '../context/inputVerification.context';
 import { useNavigate } from 'react-router-dom';
 
-export default function ChangePwdForm() {
+export default function ChangePwdForm({setMessage, toggleDialog, hideForm}) {
 
     const formDataModel = {
         currentPassword: '',
@@ -38,7 +38,14 @@ export default function ChangePwdForm() {
             if (newPassword === confirmNewPassword) {
                 if (verifyPassword(newPassword)) {
                     changePassword();
-                    navigate("/profile")
+                    setMessage("Password has been successfully changed");
+                    toggleDialog(true)
+                    setTimeout(() => {
+                        toggleDialog(false)
+                        setMessage("");
+                    }, 3000);
+                    hideForm();
+    
                 } else {
                     return
                 }

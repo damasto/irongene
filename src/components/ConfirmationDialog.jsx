@@ -1,9 +1,9 @@
-import {Dialog, DialogTitle, DialogContent} from "@mui/material"
+import {Dialog, DialogTitle, DialogContent, Typography} from "@mui/material"
 
 export default function ConfirmationDialog ({open, message}) {
     return (
-      <Dialog open={open} onClose={onClose}>
-        <DialogTitle>Delete Account</DialogTitle>
+      <Dialog open={open} >
+        <DialogTitle>Success!</DialogTitle>
         <DialogContent>
           <Typography variant="body2">
             {message}

@@ -12,7 +12,7 @@ const sideBarItems = ["My Profile", "My Bookings", "Log Out"];
 const drawerWidth = 220;
 
 export default function ProfilePage() {
-    const { getToken, logOutUser, removeToken} = useContext(AuthContext)
+    const { getToken, logOutUser, removeToken } = useContext(AuthContext)
     const [selected, setSelected] = useState("My Profile");
     const [profileData, setProfileData] = useState({});
     const [bookingData, setBookingData] = useState({})
@@ -74,7 +74,7 @@ export default function ProfilePage() {
             });
             removeToken()
             window.location.reload();
-        } catch(err) {
+        } catch (err) {
             console.log(err)
         }
     }
@@ -118,13 +118,23 @@ export default function ProfilePage() {
                         >
                             <Typography variant='body1'>email: {profileData.email} </Typography>
                             <Button onClick={toggleEmailForm}>Change email</Button>
-                            {emailForm && <ChangeEmailForm />}
+                            {emailForm &&
+                                <ChangeEmailForm
+                                    setMessage={(text) => setConfirmationMessage(text)}
+                                    toggleDialog={(status) => setShowConfirmation(status)}
+                                    hideForm={toggleEmailForm}
+                                />}
                         </Box>
                         <Button onClick={togglePasswordForm}>Change Password</Button>
-                        {changePasswordForm && <ChangePwdForm />}
+                        {changePasswordForm &&
+                            <ChangePwdForm
+                                setMessage={(text) => setConfirmationMessage(text)}
+                                toggleDialog={(status) => setShowConfirmation(status)}
+                                hideForm={togglePasswordForm}
+                            />}
                         <Typography onClick={() => { setShowDialog(true) }} variant='body2' color="error">Delete Account</Typography>
-                        <DeleteAccountDialog open={showDialog} onClose={() => { setShowDialog(false) }} onConfirm={deleteUserAccount}/>
-                        <ConfirmationDialog open={showConfirmation} onClose={() => { setShowConfirmation(false) }} message={confirmationMessage}/>
+                        <DeleteAccountDialog open={showDialog} onClose={() => { setShowDialog(false) }} onConfirm={deleteUserAccount} />
+                        <ConfirmationDialog open={showConfirmation} onClose={() => { setShowConfirmation(false) }} message={confirmationMessage} />
                     </Box>
                 )
                 break;

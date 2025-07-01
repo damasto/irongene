@@ -10,7 +10,7 @@ import {
 import api from '../api/axios';
 import { VerifyInputContext } from '../context/inputVerification.context';
 
-export default function ChangeEmailForm() {
+export default function ChangeEmailForm({setMessage, toggleDialog, hideForm}) {
     const [formData, setFormData] = useState({
         newEmail: '',
         confirmNewEmail: '',
@@ -39,6 +39,13 @@ export default function ChangeEmailForm() {
                     return
                 }
                 changeEmail();
+                setMessage("Email has been changed successfully");
+                toggleDialog(true);
+                setTimeout(() => {
+                    toggleDialog(false)
+                    setMessage("")
+                }, 3000)
+                hideForm();
             }
         }
     };
