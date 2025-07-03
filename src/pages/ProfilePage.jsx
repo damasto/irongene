@@ -7,6 +7,7 @@ import { AuthContext } from '../context/auth.context';
 import ChangePwdForm from '../components/ChangePwdForm';
 import DeleteAccountDialog from '../components/DeleteAccountDialog';
 import ConfirmationDialog from '../components/ConfirmationDialog';
+import BookingCard from '../components/BookingCard';
 
 const sideBarItems = ["My Profile", "My Bookings", "Log Out"];
 const drawerWidth = 220;
@@ -145,7 +146,10 @@ export default function ProfilePage() {
             case "My Bookings":
                 return (
                     <Box>
-                        Map bookings
+                        {bookingData.map((booking, i) => {
+                            return <BookingCard bookingData={booking} key={i}/>
+                        })}
+                      
                     </Box>
                 )
                 break;

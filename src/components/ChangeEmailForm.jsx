@@ -31,7 +31,7 @@ export default function ChangeEmailForm({ setMessage, toggleDialog, hideForm, em
         e.preventDefault();
 
         const emailCheck = (() => {
-            if (!newEmail.trim() || !confirmNewEmail.trim() | !password.trim()) {
+            if (!newEmail.trim() || !confirmNewEmail.trim() || !password.trim()) {
                 setErrorMessage("Please fill out all fields")
                 return false
             };

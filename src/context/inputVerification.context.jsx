@@ -24,8 +24,17 @@ function VerifyInputProviderWrapper(props) {
         }
     }
 
+    const verifyName = (name) => {
+        const nameRegex = /^[\p{L}'\- ]+$/u;
+        if(!nameRegex.test(name)) {
+            return
+        } else {
+            return true
+        }
+    }
+
     return (
-        <VerifyInputContext.Provider value={{ verifyEmail, verifyPassword}}>
+        <VerifyInputContext.Provider value={{ verifyEmail, verifyPassword, verifyName}}>
             {props.children}
         </VerifyInputContext.Provider>
     )

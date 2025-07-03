@@ -15,6 +15,7 @@ import { AuthContext } from "../context/auth.context";
 export default function SignIn({ onSwitchToSignUp }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState(null)
   const navigate = useNavigate();
 
   const {storeToken, authenticateUser} = useContext(AuthContext)
@@ -47,7 +48,16 @@ export default function SignIn({ onSwitchToSignUp }) {
       authenticateUser();
       navigate("/")
     } catch (err) {
-      console.log(err)
+      if (err.response) {
+        if (err.response.status === 401) {
+          setError("Incorrect email or password!");
+        } else {
+          setError("An error occured. Please try again.")
+        }
+      } else {
+        console.error("Network error", err.message)
+        setError("Unable to connect to the server")
+      }
     }
     
   }
@@ -85,6 +95,7 @@ export default function SignIn({ onSwitchToSignUp }) {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
+        {error && <Typography variant="body2" color="error" align="center">{error}</Typography>}
         <Button type="submit" variant="contained" fullWidth>
           Sign In
         </Button>

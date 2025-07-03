@@ -13,7 +13,7 @@ import { VerifyInputContext } from "../context/inputVerification.context";
 
 export default function SignUp({ onSwitchToSignIn }) {
 
-  const {verifyEmail, verifyPassword} = useContext(VerifyInputContext)
+  const { verifyEmail, verifyPassword, verifyName } = useContext(VerifyInputContext)
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -21,6 +21,7 @@ export default function SignUp({ onSwitchToSignIn }) {
     password: "",
     confirmPassword: ""
   });
+  const [error, setError] = useState(null)
 
   const navigate = useNavigate();
 
@@ -36,25 +37,51 @@ export default function SignUp({ onSwitchToSignIn }) {
   };
 
   const createUser = async () => {
-    const {firstName, lastName, email, password, confirmPassword} = formData
-    if (firstName.trim() && lastName.trim() && email.trim() && password.trim()) {
-      if(verifyEmail(email) && verifyPassword(password)) {
-        if(password !== confirmPassword) {
-          console.log("passwords do not match")
-          return
-        }
+    const { firstName, lastName, email, password, confirmPassword } = formData
 
-        try{
-          await api.post("/auth/signup", formData);
-          navigate("/signin");
-        } catch(err) {
-          console.log(err)
-        } 
-      } else {
-        return
+    const checkUserData = (() => {
+      if (!firstName.trim() || !lastName.trim() || !email.trim() || !password.trim() || !confirmPassword.trim()) {
+        setError("Please fill out all fields!");
+        return false
+      }
+
+      if (!verifyEmail(email)) {
+        setError("Provide a valid email address.")
+        return false
+      }
+
+      if (!verifyPassword(password)) {
+        setError("Password must have at least 6 characters and contain at least one number, one lowercase and one uppercase letter.")
+        return false
+      }
+
+      if (password !== confirmPassword) {
+        setError("Passwords do not match!")
+        return false
+      }
+
+      if (!verifyName(firstName) || !verifyName(lastName)) {
+        setError("Numbers or special characters are not allowed for name and last name")
+        return false
+      }
+
+      return true
+    })()
+     
+    console.log("data", checkUserData)
+    if(checkUserData) {
+      try {
+        await api.post("/auth/signup", formData);
+        navigate("/signin");
+      } catch (err) {
+        if (err.response) {
+          if(err.response.status === 400)
+          setError(err.response.data.message)
+        }
+        console.log(err)
       }
     }
-    
+
   }
 
   return (
@@ -116,6 +143,7 @@ export default function SignUp({ onSwitchToSignIn }) {
           value={formData.confirmPassword}
           onChange={handleChange}
         />
+        <Typography variant="body2" color="error" align="center">{error}</Typography>
         <Button type="submit" variant="contained" fullWidth>
           Create Account
         </Button>

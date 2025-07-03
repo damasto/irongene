@@ -8,24 +8,26 @@ import {
     Box,
 } from '@mui/material';
 
-import { useNavigate } from 'react-router-dom';
+export default function BookingCard({ bookingData}) {
+    const {clinic, date, timeSlot, _id} = bookingData;
+    console.log("in card", bookingData)
+    const {clinicName} = clinic
 
-export default function ClinicCard({name, location, description, _id }) {
+    console.log("clinic")
 
-    const image = `/images/${_id}.png`
-    const navigate = useNavigate();
+    const formatter = new Intl.DateTimeFormat("en-GB");
+    const newDate = formatter.format(new Date(date))
 
-    const handleCardClick = () => {
-        navigate(`/clinics/${_id}`)
+    const cancelBooking = async () => {
+        const cancelBooking = {
+            status: "cancelled"
+        }
+        const res = await api.put(`/api/bookings/${_id}`, )
     }
+    
 
-    const handleButtonClick = (e) => {
-        e.stopPropagation();
-        navigate(`/booking/${_id}`)
-    }
     return (
         <Card
-            onClick={handleCardClick}
             sx={{
                 width: { xs: '100%', sm: 550 },
                 maxWidth: 600,
@@ -40,25 +42,24 @@ export default function ClinicCard({name, location, description, _id }) {
         >
             <CardMedia
                 component="img"
-                height="250"
-                image={image}
-                alt={`${name} image`}
-                sx={{ objectFit: 'cover', borderTopLeftRadius: 16, borderTopRightRadius: 16, objectPosition: "center" }}
+                height="200"
+                image={""}
+                alt={` image`}
+                sx={{ objectFit: 'cover', borderTopLeftRadius: 16, borderTopRightRadius: 16 }}
             />
             <CardContent>
                 <Typography variant="h6" fontWeight={600} gutterBottom>
-                    {name}
+                Hi XX
                 </Typography>
                 <Typography variant="body2" color="text.secondary" gutterBottom>
-                    {location}
+                    You have an appointement at {clinicName} from {timeSlot}h on the {newDate}
                 </Typography>
                 <Typography variant="body2" sx={{ mb: 2 }}>
-                    {description}
+
                 </Typography>
                 <Box display="flex" justifyContent="flex-end">
 
                     <Button
-                        onClick={handleButtonClick}
                         variant="outlined"
                         sx={{
                             borderRadius: 8,
@@ -71,7 +72,7 @@ export default function ClinicCard({name, location, description, _id }) {
                             },
                         }}
                     >
-                        Book Appointment
+                        Cancel Booking
                     </Button>
                 </Box>
             </CardContent>
