@@ -145,12 +145,27 @@ export default function ProfilePage() {
                 break;
             case "My Bookings":
                 return (
-                    <Box>
-                        {bookingData.map((booking, i) => {
-                            return <BookingCard bookingData={booking} key={i}/>
-                        })}
-                      
-                    </Box>
+                     <>
+                                {bookingData.length > 0 ? (
+                                    <Box
+                                        display="flex"
+                                        flexDirection="column"
+                                        gap={4}
+                                        px={4}
+                                        py={6}
+                                        alignItems="center"
+                                    >
+                                        {bookingData.map((booking, i) => (
+                                            <BookingCard key={i} bookingData={booking} />
+                                        ))}
+                                    </Box>
+                                ) : (
+                                    <Typography variant="body1" color="text.secondary" align="center" sx={{ py: 6 }}>
+                                       You haven't any appointments booked
+                                    </Typography>
+                                )
+                                }
+                            </>
                 )
                 break;
             default:

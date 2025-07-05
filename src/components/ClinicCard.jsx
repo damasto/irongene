@@ -10,7 +10,7 @@ import {
 
 import { useNavigate } from 'react-router-dom';
 
-export default function ClinicCard({name, location, description, _id }) {
+export default function ClinicCard({clinicName, location, description, _id, speciality }) {
 
     const image = `/images/${_id}.png`
     const navigate = useNavigate();
@@ -42,21 +42,28 @@ export default function ClinicCard({name, location, description, _id }) {
                 component="img"
                 height="250"
                 image={image}
-                alt={`${name} image`}
+                alt={`${clinicName} image`}
                 sx={{ objectFit: 'cover', borderTopLeftRadius: 16, borderTopRightRadius: 16, objectPosition: "center" }}
             />
             <CardContent>
                 <Typography variant="h6" fontWeight={600} gutterBottom>
-                    {name}
+                    {clinicName}
                 </Typography>
-                <Typography variant="body2" color="text.secondary" gutterBottom>
-                    {location}
+                <Box
+                component="hr"
+                ></Box>
+                <Typography variant="subtitle1" sx={{ mb: 2 }}>
+                   <Box component="span" fontWeight="bold">Speciality: </Box>{speciality}
                 </Typography>
-                <Typography variant="body2" sx={{ mb: 2 }}>
-                    {description}
+                <Typography variant="body2" sx={{ mb: 2 }} gutterBottom>
+                     {description}
                 </Typography>
-                <Box display="flex" justifyContent="flex-end">
+        
+                <Box display="flex" justifyContent="space-between">
 
+                <Typography variant="body2" gutterBottom alignSelf="flex-end">
+                    Astrometric Anchor: <Box component="span" fontWeight="bold" fontStyle="italic" >{location}</Box>
+                </Typography>
                     <Button
                         onClick={handleButtonClick}
                         variant="outlined"

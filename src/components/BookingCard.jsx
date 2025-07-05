@@ -10,10 +10,9 @@ import {
 
 export default function BookingCard({ bookingData}) {
     const {clinic, date, timeSlot, _id} = bookingData;
-    console.log("in card", bookingData)
-    const {clinicName} = clinic
-
-    console.log("clinic")
+    const {clinicName} = clinic;
+    const image = `/images/${clinic._id}.png`
+    console.log("image", image)
 
     const formatter = new Intl.DateTimeFormat("en-GB");
     const newDate = formatter.format(new Date(date))
@@ -43,7 +42,7 @@ export default function BookingCard({ bookingData}) {
             <CardMedia
                 component="img"
                 height="200"
-                image={""}
+                image={image}
                 alt={` image`}
                 sx={{ objectFit: 'cover', borderTopLeftRadius: 16, borderTopRightRadius: 16 }}
             />
@@ -52,12 +51,27 @@ export default function BookingCard({ bookingData}) {
                 Hi XX
                 </Typography>
                 <Typography variant="body2" color="text.secondary" gutterBottom>
-                    You have an appointement at {clinicName} from {timeSlot}h on the {newDate}
+                    You have an appointment at {clinicName} from {timeSlot}h on the {newDate}
                 </Typography>
                 <Typography variant="body2" sx={{ mb: 2 }}>
 
                 </Typography>
-                <Box display="flex" justifyContent="flex-end">
+                <Box display="flex" justifyContent="flex-end" gap="10px">
+                <Button
+                        variant="outlined"
+                        sx={{
+                            borderRadius: 8,
+                            textTransform: 'none',
+                            borderColor: '#999',
+                            color: '#333',
+                            '&:hover': {
+                                backgroundColor: '#f0f0f0',
+                                borderColor: '#333',
+                            },
+                        }}
+                    >
+                        Reschedule
+                    </Button>
 
                     <Button
                         variant="outlined"
@@ -72,7 +86,7 @@ export default function BookingCard({ bookingData}) {
                             },
                         }}
                     >
-                        Cancel Booking
+                        Cancel
                     </Button>
                 </Box>
             </CardContent>

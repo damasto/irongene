@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import {
   Box,
   Button,
@@ -7,11 +7,14 @@ import {
   TextField,
   Typography,
   Paper,
+  FormControl,
+  InputLabel,
+  Menu,
 } from "@mui/material";
 import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
-import { useNavigate, useParams } from "react-router-dom";
+import { Form, useNavigate, useParams } from "react-router-dom";
 import api from "../api/axios";
 import { AuthContext } from "../context/auth.context";
 
@@ -20,11 +23,18 @@ const timeSlots = ["09:00-12:00", "13:00-16:00", "16:00-19:00"];
 export default function BookingPage() {
   const [date, setDate] = useState(null);
   const [timeSlot, setTimeSlot] = useState("");
+  const [procedures, setProcedures] = useState([])
+  const [selectedProcedure, setSelectedProcedure] = useState("")
   const { _id } = useParams();
   const navigate = useNavigate();
-  
+
 
   // Disable weekends
+
+  useEffect(() => {
+    getProcedures();
+  }, [])
+
   const disableWeekends = (date) => {
     const day = date.day();
     return day === 0 || day === 6; // Sunday = 0, Saturday = 6
@@ -39,12 +49,21 @@ export default function BookingPage() {
 
   };
 
-  
+  const getProcedures = async () => {
+    try {
+      const res = await api.get(`/api/clinics/${_id}/procedures`);
+      setProcedures(res.data.procedures)
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
   const bookAppointment = async () => {
 
     const newBooking = {
       date: date,
-      timeSlot: timeSlot
+      timeSlot: timeSlot,
+      procedure: selectedProcedure
     };
 
     console.log("id:", _id, "newBooking: ", newBooking)
@@ -60,6 +79,14 @@ export default function BookingPage() {
       console.error("Error: ", err)
     }
   };
+
+  const handleChange = () => {
+
+  }
+
+  useEffect(() => {
+    console.log("prods", procedures)
+  }, [procedures])
 
 
   return (
@@ -95,23 +122,40 @@ export default function BookingPage() {
             disablePast
             renderInput={(params) => <TextField {...params} />}
           />
-
-          <Select
-            value={timeSlot}
-            onChange={(e) => setTimeSlot(e.target.value)}
-            displayEmpty
-            variant="outlined"
-          >
-            <MenuItem value="" disabled>
-              Select a time slot
-            </MenuItem>
-            {timeSlots.map((slot) => (
-              <MenuItem key={slot} value={slot}>
-                {slot}
+          <FormControl>
+            <Select
+              value={timeSlot}
+              onChange={(e) => setTimeSlot(e.target.value)}
+              displayEmpty
+              variant="outlined"
+            >
+              <MenuItem value="" disabled>
+                Select a time slot
               </MenuItem>
-            ))}
-          </Select>
-
+              {timeSlots.map((slot) => (
+                <MenuItem key={slot} value={slot}>
+                  {slot}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+          <FormControl>
+            <InputLabel id="procedure-label">Procedure</InputLabel>
+            <Select
+              labelId="procedure-label"
+              value={selectedProcedure}
+              label="selectedProcedure"
+              onChange={(e) => setSelectedProcedure(e.target.value)}
+            >
+              {procedures.length > 0 ? (
+              procedures.map((procedure, i) => {
+                return <MenuItem key={i} value={procedure}>{procedure}</MenuItem>
+              })
+            ) : (
+              <MenuItem disabled> Procedures not available...</MenuItem>
+            )}
+            </Select>
+          </FormControl>
           <Button type="submit" variant="contained" fullWidth>
             Book Now
           </Button>
@@ -120,3 +164,4 @@ export default function BookingPage() {
     </LocalizationProvider>
   );
 }
+
