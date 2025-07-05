@@ -56,13 +56,6 @@ export default function ChangeEmailForm({ setMessage, toggleDialog, hideForm, em
 
         if (emailCheck) {
             changeEmail();
-            setMessage("Email has been changed successfully");
-            toggleDialog(true);
-            setTimeout(() => {
-                toggleDialog(false)
-                setMessage("")
-            }, 3000)
-            hideForm();
         }
     };
 
@@ -75,7 +68,19 @@ export default function ChangeEmailForm({ setMessage, toggleDialog, hideForm, em
         try {
             const res = await api.put("api/users/profile/email", updateEmail);
             console.log('Form submitted:', updateEmail);
+            setMessage("Email has been changed successfully");
+            toggleDialog(true);
+            setTimeout(() => {
+                toggleDialog(false)
+                setMessage("")
+            }, 3000)
+            hideForm();
         } catch (err) {
+            if (err.response) {
+                if (err.response.status === 401) {
+                    setErrorMessage(err.response.data.message)
+                }
+            }
             console.log(err)
         }
     }
