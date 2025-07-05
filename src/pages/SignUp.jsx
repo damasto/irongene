@@ -75,10 +75,15 @@ export default function SignUp({ onSwitchToSignIn }) {
         navigate("/signin");
       } catch (err) {
         if (err.response) {
-          if(err.response.status === 400)
-          setError(err.response.data.message)
+          if(err.response.status === 400) {
+            setError(err.response.data.message)
+          } else {
+            setError("An error ocurred, please try again")
+          }
+        } else {
+          console.error("Network error: ", err.message);
+          setError("Unable to connect to the server")
         }
-        console.log(err)
       }
     }
 

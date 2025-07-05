@@ -78,10 +78,14 @@ export default function ChangeEmailForm({ setMessage, toggleDialog, hideForm, em
         } catch (err) {
             if (err.response) {
                 if (err.response.status === 401) {
-                    setErrorMessage(err.response.data.message)
+                    setErrorMessage("Incorrect Password")
+                } else {
+                    setErrorMessage("An error occurred please try again")
                 }
+            } else {
+                console.error("Network error", err.message);
+                setErrorMessage("Unable to connect to the server")
             }
-            console.log(err)
         }
     }
 

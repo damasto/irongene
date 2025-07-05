@@ -14,10 +14,16 @@ import {
 import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
+import localizedFormat from "dayjs/plugin/localizedFormat";
+import customParseFormat from "dayjs/plugin/customParseFormat";
 import { Form, useNavigate, useParams } from "react-router-dom";
 import api from "../api/axios";
 import { AuthContext } from "../context/auth.context";
+import ConfirmationDialog from "../components/ConfirmationDialog";
 
+dayjs.extend(localizedFormat);
+dayjs.extend(customParseFormat);
+dayjs.locale("es");
 const timeSlots = ["09:00-12:00", "13:00-16:00", "16:00-19:00"];
 
 export default function BookingPage() {
@@ -25,6 +31,9 @@ export default function BookingPage() {
   const [timeSlot, setTimeSlot] = useState("");
   const [procedures, setProcedures] = useState([])
   const [selectedProcedure, setSelectedProcedure] = useState("")
+  const [showDialog, setShowDialog] = useState(false)
+  const [dialogMessage, setDialogMessage] = useState("")
+  const [error, setError] = useState(null)
   const { _id } = useParams();
   const navigate = useNavigate();
 
@@ -74,15 +83,26 @@ export default function BookingPage() {
 
     try {
       const res = await api.post(`api/bookings/${_id}`, newBooking);
-      navigate("/")
+      setDialogMessage("We have booked your appointment. You'll be redirected to our homepage")
+      setShowDialog(true);
+      setTimeout(() => {
+        setShowDialog(false)
+        setTimeout(()=> {
+          navigate("/")
+        }, 1000)
+
+      }, 4000)
+      
     } catch (err) {
-      console.error("Error: ", err)
+      if (err.response) {
+        setError(err.response.data.message)
+      } else {
+        console.error("Network error: ", err.message)
+        setError("Unable to connect to the server")
+      }
     }
   };
 
-  const handleChange = () => {
-
-  }
 
   useEffect(() => {
     console.log("prods", procedures)
@@ -90,7 +110,7 @@ export default function BookingPage() {
 
 
   return (
-    <LocalizationProvider dateAdapter={AdapterDayjs}>
+    <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="es">
       <Paper
         elevation={3}
         sx={{
@@ -119,6 +139,7 @@ export default function BookingPage() {
             value={date}
             onChange={(newValue) => setDate(newValue)}
             shouldDisableDate={disableWeekends}
+            inputFormat="DD/MM/YYYY"
             disablePast
             renderInput={(params) => <TextField {...params} />}
           />
@@ -156,10 +177,12 @@ export default function BookingPage() {
             )}
             </Select>
           </FormControl>
+          {error && <Typography variant="body2" color="error">{error}</Typography>}
           <Button type="submit" variant="contained" fullWidth>
             Book Now
           </Button>
         </Box>
+        <ConfirmationDialog open={showDialog} message={dialogMessage} />
       </Paper>
     </LocalizationProvider>
   );

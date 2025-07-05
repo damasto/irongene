@@ -7,8 +7,11 @@ import {
     Button,
     Box,
 } from '@mui/material';
+import { useState } from 'react';
+import RescheduleBooking from './RescheduleBooking';
 
 export default function BookingCard({ bookingData}) {
+    const [showBookingDialog, setShowBookingDialog] = useState(false)
     const {clinic, date, timeSlot, _id} = bookingData;
     const {clinicName} = clinic;
     const image = `/images/${clinic._id}.png`
@@ -58,6 +61,8 @@ export default function BookingCard({ bookingData}) {
                 </Typography>
                 <Box display="flex" justifyContent="flex-end" gap="10px">
                 <Button
+                        onClick={() => {setShowBookingDialog(true)}
+                        }
                         variant="outlined"
                         sx={{
                             borderRadius: 8,
@@ -90,6 +95,7 @@ export default function BookingCard({ bookingData}) {
                     </Button>
                 </Box>
             </CardContent>
+            <RescheduleBooking open={showBookingDialog} booking={bookingData} formattedDate={newDate} onClose={() => setShowBookingDialog(false)}/>
         </Card>
     );
 }

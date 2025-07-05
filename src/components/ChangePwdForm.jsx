@@ -22,7 +22,7 @@ export default function ChangePwdForm({ setMessage, toggleDialog, hideForm }) {
     const { currentPassword, newPassword, confirmNewPassword } = formData;
     const { verifyPassword } = useContext(VerifyInputContext);
     const [errorMessage, setErrorMessage] = useState(null)
-    const navigate = useNavigate()
+
 
     const handleChange = (e) => {
         setFormData((prev) => ({
@@ -60,13 +60,6 @@ export default function ChangePwdForm({ setMessage, toggleDialog, hideForm }) {
 
         if (passwordChecks) {
             changePassword();
-            setMessage("Password has been successfully changed");
-            toggleDialog(true)
-            setTimeout(() => {
-                toggleDialog(false)
-                setMessage("");
-            }, 3000);
-            hideForm();
         }
     };
 
@@ -77,8 +70,24 @@ export default function ChangePwdForm({ setMessage, toggleDialog, hideForm }) {
         }
         try {
             const res = await api.put("/api/users/profile/password", changedPwd)
+            setMessage("Password has been successfully changed");
+            toggleDialog(true)
+            setTimeout(() => {
+                toggleDialog(false)
+                setMessage("");
+            }, 3000);
+            hideForm();
         } catch (err) {
-            console.log(err)
+            if(err.response) {
+                if(err.response.status  === 401) {
+                    setErrorMessage("Incorrect Password")
+                } else {
+                    setErrorMessage(err.response.data.message)
+                }
+            } else {
+                console.error("Network error: ", err.message);
+                setErrorMessage("Unable to connect to the server")
+            }
         }
     }
 
