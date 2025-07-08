@@ -13,29 +13,28 @@ const sideBarItems = ["My Profile", "My Bookings", "Log Out"];
 const drawerWidth = 220;
 
 export default function ProfilePage() {
-    const { getToken, logOutUser, removeToken } = useContext(AuthContext)
+    const { getToken, logOutUser, removeToken } = useContext(AuthContext);
     const [selected, setSelected] = useState("My Profile");
     const [profileData, setProfileData] = useState({});
-    const [bookingData, setBookingData] = useState({})
-    const [isLoading, setIsLoading] = useState(true)
-    const [emailForm, setEmailForm] = useState(false)
-    const [changePasswordForm, setChangePasswordForm] = useState(false)
-    const [showDialog, setShowDialog] = useState(false)
-    const [showConfirmation, setShowConfirmation] = useState(false)
-    const [confirmationMessage, setConfirmationMessage] = useState("")
-    const [errorMessage, setErrorMessage] = useState(null)
+    const [bookingData, setBookingData] = useState({});
+    const [isLoading, setIsLoading] = useState(true);
+    const [emailForm, setEmailForm] = useState(false);
+    const [changePasswordForm, setChangePasswordForm] = useState(false);
+    const [showDialog, setShowDialog] = useState(false);
+    const [showLogOut, setShowLogOut] = useState(false)
+    const [showConfirmation, setShowConfirmation] = useState(false);
+    const [confirmationMessage, setConfirmationMessage] = useState("");
+    const [errorMessage, setErrorMessage] = useState(null);
     const navigate = useNavigate();
     const navbarHeight = 74;
+    const title = "Delete Account"
+    const deleteMessage = "Are you sure you want to delete your account? This action cannot be undone." 
+    const deleteAction = "delete"
 
     useEffect(() => {
         getProfileData();
         getBookingData();
     }, [])
-
-    useEffect(() => {
-        console.log("pdata; ", profileData)
-        console.log("Bdata; ", bookingData)
-    }, [profileData])
 
     const getProfileData = async () => {
         try {
@@ -109,7 +108,7 @@ export default function ProfilePage() {
                             display={"flex"}
                             gap={20}
                         >
-                            <Typography variant='body1'>First name: {profileData.firstName} </Typography>
+                            <Typography variant='body1'>Name: {profileData.firstName} </Typography>
                             <Typography variant='body1'>Last name: {profileData.lastName}</Typography>
                         </Box>
                         <Box
@@ -138,7 +137,14 @@ export default function ProfilePage() {
                                 hideForm={togglePasswordForm}
                             />}
                         <Typography onClick={() => { setShowDialog(true) }} variant='body2' color="error">Delete Account</Typography>
-                        <DeleteAccountDialog open={showDialog} onClose={() => { setShowDialog(false) }} onConfirm={deleteUserAccount} />
+                        <DeleteAccountDialog 
+                        open={showDialog} 
+                        onClose={() => { setShowDialog(false) }} 
+                        onConfirm={deleteUserAccount}
+                        title={title}
+                        message={deleteMessage}
+                        action={deleteAction}
+                         />
                         <ConfirmationDialog open={showConfirmation} onClose={() => { setShowConfirmation(false) }} message={confirmationMessage} />
                     </Box>
                 )
@@ -156,7 +162,10 @@ export default function ProfilePage() {
                                         alignItems="center"
                                     >
                                         {bookingData.map((booking, i) => (
-                                            <BookingCard key={i} bookingData={booking} />
+                                            <BookingCard 
+                                            key={i} 
+                                            bookingData={booking}
+                                            onBookingUpdate={getBookingData} />
                                         ))}
                                     </Box>
                                 ) : (
@@ -165,6 +174,7 @@ export default function ProfilePage() {
                                     </Typography>
                                 )
                                 }
+
                             </>
                 )
                 break;
@@ -196,7 +206,7 @@ export default function ProfilePage() {
                     <List>
                         {sideBarItems.map((text) => (
                             <ListItem
-                                button
+                                component="button"
                                 key={text}
                                 onClick={() => handleMenuClick(text)}
                                 sx={{

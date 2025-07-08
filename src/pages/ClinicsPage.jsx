@@ -16,7 +16,6 @@ export default function ClinicsPage() {
             setLoading(true);
             const res = await api.get("/api/clinics");
             setClinics(res.data);
-            console.log("clinics: ", clinics)
         } catch (err) {
             setError(err.message)
         } finally {

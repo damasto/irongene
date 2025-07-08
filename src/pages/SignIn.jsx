@@ -23,7 +23,6 @@ export default function SignIn({ onSwitchToSignUp }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Sign in with", { email, password });
     login();
   };
 

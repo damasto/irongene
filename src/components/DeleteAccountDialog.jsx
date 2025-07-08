@@ -7,21 +7,21 @@ import {
   Button
 } from '@mui/material';
 
-export default function DeleteAccountDialog ({open, onClose, onConfirm}) {
+export default function DeleteAccountDialog ({open, onClose, onConfirm, message, action, title}) {
     return (
       <Dialog open={open} onClose={onClose}>
-        <DialogTitle>Delete Account</DialogTitle>
+        <DialogTitle>{title}</DialogTitle>
         <DialogContent>
           <Typography variant="body2">
-            Are you sure you want to delete your account? This action cannot be undone.
+            {message}
           </Typography>
         </DialogContent>
         <DialogActions>
           <Button onClick={onClose} variant="outlined">
-            Cancel
+            Return
           </Button>
           <Button onClick={onConfirm} color="error" variant="contained">
-            Yes, Delete
+            Yes, {action}
           </Button>
         </DialogActions>
       </Dialog>

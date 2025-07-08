@@ -23,6 +23,7 @@ export default function ClinicCard({clinicName, location, description, _id, spec
         e.stopPropagation();
         navigate(`/booking/${_id}`)
     }
+    
     return (
         <Card
             onClick={handleCardClick}
@@ -60,7 +61,7 @@ export default function ClinicCard({clinicName, location, description, _id, spec
                 </Typography>
         
                 <Box display="flex" justifyContent="space-between">
-
+                    
                 <Typography variant="body2" gutterBottom alignSelf="flex-end">
                     Astrometric Anchor: <Box component="span" fontWeight="bold" fontStyle="italic" >{location}</Box>
                 </Typography>

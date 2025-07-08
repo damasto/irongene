@@ -10,6 +10,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import api from "../api/axios";
 import { VerifyInputContext } from "../context/inputVerification.context";
+import ConfirmationDialog from "../components/ConfirmationDialog";
 
 export default function SignUp({ onSwitchToSignIn }) {
 
@@ -21,7 +22,9 @@ export default function SignUp({ onSwitchToSignIn }) {
     password: "",
     confirmPassword: ""
   });
-  const [error, setError] = useState(null)
+  const [error, setError] = useState(null);
+  const [open, setOpen] = useState(false);
+  const [message, setMessage] = useState("")
 
   const navigate = useNavigate();
 
@@ -72,7 +75,13 @@ export default function SignUp({ onSwitchToSignIn }) {
     if(checkUserData) {
       try {
         await api.post("/auth/signup", formData);
-        navigate("/signin");
+        setMessage("Your account has been created, you will be redirected to the login page")
+        setOpen(true)
+        setTimeout(() => {
+          navigate("/signin")
+          setOpen(false)
+          setMessage("")
+        }, 3000);
       } catch (err) {
         if (err.response) {
           if(err.response.status === 400) {
@@ -158,6 +167,7 @@ export default function SignUp({ onSwitchToSignIn }) {
             Sign In
           </Link>
         </Typography>
+        <ConfirmationDialog open={open} message={message}/>
       </Box>
     </Paper>
   );

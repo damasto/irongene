@@ -21,6 +21,7 @@ import 'dayjs/locale/es';
 import { useNavigate, useParams } from "react-router-dom";
 import api from "../api/axios";
 import { AuthContext } from "../context/auth.context";
+import ConfirmationDialog from "./ConfirmationDialog";
 
 dayjs.extend(localizedFormat);
 dayjs.extend(customParseFormat);
@@ -34,27 +35,24 @@ export default function RescheduleBooking({ open, onClose, booking }) {
     const [procedures, setProcedures] = useState([]);
     const [selectedProcedure, setSelectedProcedure] = useState(booking.procedure);
     const [dialogMessage, setDialogMessage] = useState("");
+    const [showConfirmation, setShowConfirmation] = useState(false)
     const [error, setError] = useState(null);
     const clinicId = booking.clinic._id;
     const bookingId = booking._id
 
-    console.log("bkId:", bookingId)
-
-    const navigate = useNavigate();
 
     useEffect(() => {
+        const getProcedures = async () => {
+            try {
+                const res = await api.get(`/api/clinics/${clinicId}/procedures`);
+                setProcedures(res.data.procedures)
+            } catch (err) {
+                console.log(err)
+            }
+        }
         getProcedures();
     }, [])
 
-
-    const getProcedures = async () => {
-        try {
-            const res = await api.get(`/api/clinics/${clinicId}/procedures`);
-            setProcedures(res.data.procedures)
-        } catch (err) {
-            console.log(err)
-        }
-    }
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -65,9 +63,15 @@ export default function RescheduleBooking({ open, onClose, booking }) {
                 procedure: selectedProcedure,
             });
             setDialogMessage("Booking successfully rescheduled!");
-            onClose(); // Close dialog after success
-            navigate("/profile");
+            setShowConfirmation(true)
+            setTimeout(() => {
+                onClose(true)
+                setShowConfirmation(false)
+                setDialogMessage("")
+            }, 3000)
+
         } catch (err) {
+            onClose(false)
             console.log(err)
             setDialogMessage("Failed to reschedule booking.");
         }
@@ -78,7 +82,6 @@ export default function RescheduleBooking({ open, onClose, booking }) {
         return day === 0 || day === 6; // Sunday = 0, Saturday = 6
     };
 
-    console.log(booking.procedure)
     return (
         <Dialog open={open} onClose={onClose}>
             <DialogTitle>Reschedule Booking</DialogTitle>
@@ -140,12 +143,8 @@ export default function RescheduleBooking({ open, onClose, booking }) {
                     <Button type="submit" variant="contained" fullWidth>
                         Reschedule
                     </Button>
-
-                    {dialogMessage && (
-                        <Typography variant="body2" color="error">
-                            {dialogMessage}
-                        </Typography>
-                    )}
+                    {error && <Typography variant="body2" color="error">{error}</Typography>}
+                    <ConfirmationDialog open={showConfirmation} message={dialogMessage} />
                 </Box>
             </DialogContent>
         </Dialog>

@@ -8,9 +8,45 @@ import {
 } from '@mui/material';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import { Link as RouterLink } from "react-router-dom"
+import { Route, Link as RouterLink } from "react-router-dom"
+import { AuthContext } from '../context/auth.context';
+import { useContext, useState, useEffect } from 'react';
+import api from '../api/axios';
+
 
 export default function NavBar() {
+
+  const {isAdmin} = useContext(AuthContext);
+  
+  const [error, setError] = useState(null)
+
+  console.log(isAdmin, "admin")
+  
+  
+
+ /* const getUserRole = async () => {
+    try {
+      const res = api.get("/api/users/user/role", {
+        headers: {
+          Authorization: `Bearer ${getToken()}`
+        }
+      })
+      console.log("response", res)
+      if(res.data.role === "admin") {
+        setIsAdmin(true)
+      } else {
+        setIsAdmin(false)
+      }
+    } catch(err) {
+      if (err.response) {
+        setError(err.response.message)
+      } else {
+        setError(err.message);
+        console.error("Network Error: ", err.message)
+      }
+    }
+  }*/
+
   return (
     <AppBar
       position="sticky"
@@ -42,6 +78,11 @@ export default function NavBar() {
           <Button color="inherit" sx={{ fontWeight: 300 }}>
             Team
           </Button>
+          {isAdmin && (
+            <RouterLink to="/system-administration">
+            <Button color="inherit" sx={{ fontWeight: 300 }}>System Administration</Button>
+            </RouterLink>
+          )}
         </Box>
 
         {/* Right: Icons */}
