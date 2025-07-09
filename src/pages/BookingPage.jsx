@@ -155,7 +155,7 @@ export default function BookingPage() {
             gap={3}
           >
             <TextField
-              label={`Clinic:`}
+              label={"Clinic:"}
               value={`${clinicName} ${location}`}
               slotProps={{
                 input: {

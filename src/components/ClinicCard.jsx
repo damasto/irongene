@@ -9,6 +9,7 @@ import {
 } from '@mui/material';
 
 import { useNavigate } from 'react-router-dom';
+import NewClinicForm from './NewClinicForm';
 
 export default function ClinicCard({clinicName, location, description, _id, speciality }) {
 
@@ -61,7 +62,7 @@ export default function ClinicCard({clinicName, location, description, _id, spec
                 </Typography>
         
                 <Box display="flex" justifyContent="space-between">
-                    
+
                 <Typography variant="body2" gutterBottom alignSelf="flex-end">
                     Astrometric Anchor: <Box component="span" fontWeight="bold" fontStyle="italic" >{location}</Box>
                 </Typography>
