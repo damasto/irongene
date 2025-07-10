@@ -17,35 +17,6 @@ import api from '../api/axios';
 export default function NavBar() {
 
   const {isAdmin} = useContext(AuthContext);
-  
-  const [error, setError] = useState(null)
-
-  console.log(isAdmin, "admin")
-  
-  
-
- /* const getUserRole = async () => {
-    try {
-      const res = api.get("/api/users/user/role", {
-        headers: {
-          Authorization: `Bearer ${getToken()}`
-        }
-      })
-      console.log("response", res)
-      if(res.data.role === "admin") {
-        setIsAdmin(true)
-      } else {
-        setIsAdmin(false)
-      }
-    } catch(err) {
-      if (err.response) {
-        setError(err.response.message)
-      } else {
-        setError(err.message);
-        console.error("Network Error: ", err.message)
-      }
-    }
-  }*/
 
   return (
     <AppBar
@@ -70,7 +41,7 @@ export default function NavBar() {
           <Button color="inherit" sx={{ fontWeight: 300 }}>
             Products
           </Button>
-          <RouterLink to="/clinics">
+          <RouterLink to="/clinics" className='no-decoration'>
             <Button color="inherit" sx={{ fontWeight: 300 }}>
               Clinics
             </Button>
@@ -79,7 +50,7 @@ export default function NavBar() {
             Team
           </Button>
           {isAdmin && (
-            <RouterLink to="/system-administration">
+            <RouterLink className='no-decoration' to="/system-administration">
             <Button color="inherit" sx={{ fontWeight: 300 }}>System Administration</Button>
             </RouterLink>
           )}

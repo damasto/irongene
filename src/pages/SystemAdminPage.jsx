@@ -32,14 +32,15 @@ export default function SystemAdminPage() {
         <Box
             sx={{
                 width: "100%",
-                borderRadius: 4,
-                height: '100%',
-                backgroundColor: "transparent",
-                backgroundImage: "none",
+            
+                maxHeight:"md",
+                height: 600,
+                backgroundColor: "grey",
                 color: '#fff',
                 cursor: 'pointer',
-                boxShadow: 1,
                 display: "flex",
+                alignItems: "center",
+                justifyContent: "center"
 
             }}
         >

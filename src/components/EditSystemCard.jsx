@@ -13,7 +13,7 @@ export default function EditSystemCard({ title, id, onAction }) {
                 width: { xs: '100%', sm: 550 },
                 height: { xs: "100%", sm: 150 },
                 maxWidth: 600,
-                height: "100%",
+                height: "50%",
                 borderRadius: 4,
                 boxShadow: '0 8px 24px rgba(0, 0, 0, 0.06)',
                 backgroundColor: '#ffffff',

@@ -1,3 +1,4 @@
 .no-decoration {
     text-decoration: none;
+    color: inherit;
 }
