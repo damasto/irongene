@@ -10,7 +10,7 @@ import {
 import api from '../api/axios';
 import { VerifyInputContext } from '../context/inputVerification.context';
 
-export default function ChangeEmailForm({ setMessage, toggleDialog, hideForm, email }) {
+export default function ChangeEmailForm({ setMessage, toggleDialog, hideForm, email, emailNotValid}) {
     const [formData, setFormData] = useState({
         newEmail: '',
         confirmNewEmail: '',
@@ -47,7 +47,7 @@ export default function ChangeEmailForm({ setMessage, toggleDialog, hideForm, em
             };
 
             if (!verifyEmail(newEmail)) {
-                setErrorMessage("Provide a valid email address.")
+                setErrorMessage(emailNotValid)
                 return false
             };
 

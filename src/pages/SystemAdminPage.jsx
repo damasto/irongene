@@ -2,6 +2,7 @@ import { Box, Button } from "@mui/material";
 import EditSystemCard from "../components/EditSystemCard";
 import { useState, useRef} from "react";
 import AdminDialog from "../components/ModelDialog";
+import ModelDialog from "../components/ModelDialog";
 
 export default function SystemAdminPage() {
     const [dialogMode, setDialogMode] = useState("");
@@ -55,7 +56,7 @@ export default function SystemAdminPage() {
                 )
 
             })}
-            <AdminDialog open={dialogOpen} onClose={handleClose} mode={dialogMode} type={dialogType}/>
+            <ModelDialog open={dialogOpen} onClose={handleClose} mode={dialogMode} type={dialogType}/>
         </Box>
     )
 }

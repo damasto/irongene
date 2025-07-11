@@ -4,6 +4,9 @@ import React from "react";
 const VerifyInputContext = React.createContext();
 
 function VerifyInputProviderWrapper(props) {
+
+    const emailNotValid = "Please provide a valid email";
+    const pwdNotValid = "Password must have at least 6 characters and contain at least one number, one lowercase and one uppercase letter.";
    
     const verifyEmail = (email) => {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
@@ -33,7 +36,7 @@ function VerifyInputProviderWrapper(props) {
     }
 
     return (
-        <VerifyInputContext.Provider value={{ verifyEmail, verifyPassword, verifyName}}>
+        <VerifyInputContext.Provider value={{ verifyEmail, verifyPassword, verifyName, emailNotValid, pwdNotValid}}>
             {props.children}
         </VerifyInputContext.Provider>
     )

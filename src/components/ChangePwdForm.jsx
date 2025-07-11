@@ -9,7 +9,6 @@ import {
 } from '@mui/material';
 import api from '../api/axios';
 import { VerifyInputContext } from '../context/inputVerification.context';
-import { useNavigate } from 'react-router-dom';
 
 export default function ChangePwdForm({ setMessage, toggleDialog, hideForm }) {
 
@@ -20,7 +19,7 @@ export default function ChangePwdForm({ setMessage, toggleDialog, hideForm }) {
     }
     const [formData, setFormData] = useState(formDataModel);
     const { currentPassword, newPassword, confirmNewPassword } = formData;
-    const { verifyPassword } = useContext(VerifyInputContext);
+    const { verifyPassword, pwdNotValid } = useContext(VerifyInputContext);
     const [errorMessage, setErrorMessage] = useState(null)
 
 
@@ -51,7 +50,7 @@ export default function ChangePwdForm({ setMessage, toggleDialog, hideForm }) {
             };
 
             if (!verifyPassword(newPassword)) {
-                setErrorMessage("Password must have at least 6 characters and contain at least one number, one lowercase and one uppercase letter.")
+                setErrorMessage(pwdNotValid)
                 return false
             }
 

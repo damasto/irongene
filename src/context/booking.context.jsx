@@ -70,7 +70,7 @@ function BookingProviderWrapper(props) {
     
 
     return (
-        <VerifyInputContext.Provider value={{ 
+        <BookingContext.Provider value={{ 
           setDate, 
           timeSlots,
           timeSlot,
@@ -87,8 +87,8 @@ function BookingProviderWrapper(props) {
 
           }}>
             {props.children}
-        </VerifyInputContext.Provider>
+        </BookingContext.Provider>
     )
 }
 
-export { VerifyInputProviderWrapper, VerifyInputContext };
+export { BookingProviderWrapper, BookingContext };

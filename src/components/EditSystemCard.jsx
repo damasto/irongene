@@ -55,8 +55,7 @@ export default function EditSystemCard({ title, id, onAction }) {
                     <Button variant="outlined" onClick={(event) => onAction("create", id, event)}>
                         Create new
                     </Button>
-                    <Button
-                        variant="contained">
+                    <Button variant="contained" onClick={(event) => onAction("edit", id, event)}>
                         Edit existing
                     </Button>
                 </Box>

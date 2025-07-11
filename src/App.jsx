@@ -17,6 +17,7 @@ import NoPermissionsPage from './pages/NoPermissionsPage'
 import SystemAdminPage from './pages/SystemAdminPage'
 import IsAdmin from './components/isAdmin'
 import NotFoundPage from './pages/NotFoundPage'
+import EditUsersPage from './components/EditUsersTable'
 
 
 
@@ -37,8 +38,6 @@ function App() {
     <Route path="/forbidden" element={<NoPermissionsPage/>}></Route>
     <Route path="*" element={<NotFoundPage/>}></Route>
     <Route path="/system-administration" element={<IsAdmin><SystemAdminPage/></IsAdmin>}></Route>
-
-    
    </Routes>
    <Footer/>
     </>
