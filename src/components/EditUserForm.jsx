@@ -9,6 +9,7 @@ import {
     FormControl,
     InputLabel,
     Dialog,
+    DialogTitle,
 } from "@mui/material";
 import { useContext, useState } from "react";
 import { FormDataContext } from "../context/formData.context";
@@ -18,18 +19,17 @@ import { VerifyInputContext } from "../context/inputVerification.context";
 
 
 
-export default function EditUserForm({ }) {
+export default function EditUserForm({open, onClose, user}) {
     const { handleChange, formData, errorMessage, setErrorMessage, openButtonRef } = useContext(FormDataContext)
     const { verifyEmail, verifyPassword, emailNotValid, pwdNotValid } = useContext(VerifyInputContext)
-    const [isDisabled, setIsDisabled] = useState(true)
+    const [isDisabled, setIsDisabled] = useState(false)
     const textFields = ["firstName", "lastName", "email", "role", "password"]
     const roles = ["user", "admin"];
     const [dialogOpen, setDialogOpen] = useState(false)
     const dialogMessage = "User has been updated."
 
-
-
-
+    console.log("current user", user)
+    
     const handleClose = () => {
         setDialogOpen(false)
         openButtonRef.current?.focus()
@@ -58,14 +58,14 @@ export default function EditUserForm({ }) {
         }
 
         if (textFieldsFilled) {
-            createNewUser();
+            updateUser(user._id);
             return
         }
     }
 
-    const createNewUser = async () => {
+    const updateUser = async (userId) => {
         try {
-            const res = await api.post("/auth/signup", formData);
+            const res = await api.put(`/api/users/${userId}`, formData);
             setDialogOpen(true)
             setTimeout(() => {
                 setDialogOpen(false);
@@ -85,8 +85,15 @@ export default function EditUserForm({ }) {
 
     return (
         <>
-        <Dialog>
-
+        <Dialog
+        onClose={onClose}
+        open={open}
+        fullWidth
+        sx={{
+            maxWidth:"md"
+        }}
+        >
+            <DialogTitle textAlign={"center"}>Edit User</DialogTitle>
             <Paper
                 elevation={0}
                 sx={{
@@ -116,7 +123,7 @@ export default function EditUserForm({ }) {
                         label="First Name"
                         name="firstName"
                         type="text"
-                        value={formData.firstName || ""}
+                        value={formData.firstName || user.firstName}
                         onChange={handleChange}
                         disabled={isDisabled}
 
@@ -125,7 +132,7 @@ export default function EditUserForm({ }) {
                         label="Last Name"
                         name="lastName"
                         type="text"
-                        value={formData.lastName || ""}
+                        value={formData.lastName || user.lastName}
                         onChange={handleChange}
                         disabled={isDisabled}
 
@@ -134,7 +141,7 @@ export default function EditUserForm({ }) {
                         label="Email"
                         name="email"
                         type="email"
-                        value={formData.email || ""}
+                        value={formData.email || user.email}
                         onChange={handleChange}
                         disabled={isDisabled}
                     ></TextField>
@@ -151,7 +158,7 @@ export default function EditUserForm({ }) {
                         <Select
                             label="role-label"
                             name="role"
-                            value={formData.role || ""}
+                            value={formData.role || user.role}
                             onChange={handleChange}
                             variant="outlined"
                             disabled={isDisabled}

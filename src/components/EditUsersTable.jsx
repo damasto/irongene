@@ -3,6 +3,7 @@ import api from "../api/axios";
 import { useEffect, useState } from "react";
 import PropertyTable from "./PropertyTable";
 import ConfirmationDialog from "./ConfirmationDialog";
+import EditUserForm from "./EditUserForm";
 
 export default function EditUsersTable() {
 
@@ -10,10 +11,14 @@ export default function EditUsersTable() {
     const [errorMessage, setErrorMessage] = useState("");
     const [confirmationMessage, setConfirmationMessage] = useState("")
     const [open, setOpen] = useState(false);
-
+    const [showUserForm, setShowUserForm] = useState(false);
+    const [user, setUser] = useState({})
+    
     useEffect(() => {
         getUsers();
     }, [])
+
+
 
 
     const getUsers = async () => {
@@ -63,11 +68,15 @@ export default function EditUsersTable() {
                     handleOpen={(state) => setOpen(state)} 
                     onError={(error) => setErrorMessage(error)}
                     setConfirmationMessage={(message) => setConfirmationMessage(message)}
+                    onClose={() => setOpen(false)}
+                    showForm={(status) => {setShowUserForm(status)}}
+                    setUser={(user) => setUser(user)}
                     />
                 )}
             </Table>
         </TableContainer>
         <ConfirmationDialog open={open} message={confirmationMessage}/>
+        <EditUserForm open={showUserForm} onClose={() => setShowUserForm(false)} user={user}/>
         </>
     )
 }

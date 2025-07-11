@@ -1,9 +1,17 @@
 import { Button, TableBody, TableCell, TableRow, Typography } from "@mui/material";
 import api from "../api/axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 
-export default function PropertyTable ({users, onUserUpdate, handleOpen, onError, setConfirmationMessage}) {
+export default function PropertyTable ({users, onUserUpdate, handleOpen, onError, setConfirmationMessage, onClose, showForm, setUser}) {
+
+  
+
+
+    const handleEdit = (person) => {
+        setUser(person);
+        showForm(true)
+    }
 
 
     const handleDelete = async (userId) => {
@@ -12,6 +20,9 @@ export default function PropertyTable ({users, onUserUpdate, handleOpen, onError
             onUserUpdate();
             setConfirmationMessage(res.data.message);
             handleOpen(true)
+            setTimeout(() => {
+                onClose();
+            }, 2000)
         } catch(err) {
             if(err.response) {
                 onError(err.response.data.message)
@@ -41,7 +52,7 @@ export default function PropertyTable ({users, onUserUpdate, handleOpen, onError
                         
                     }}
                     >
-                        <Button>Edit</Button>
+                        <Button onClick={() => {handleEdit(user)}}>Edit</Button>
                         <Button onClick={() => {handleDelete(user._id)}} color="error">Delete</Button>
                     </TableCell>
                 </TableRow>
