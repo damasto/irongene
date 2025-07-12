@@ -1,9 +1,10 @@
 import { Paper, Table, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 import api from "../api/axios";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import PropertyTable from "./PropertyTable";
 import ConfirmationDialog from "./ConfirmationDialog";
 import EditUserForm from "./EditUserForm";
+import { FormDataContext } from "../context/formData.context";
 
 export default function EditUsersTable() {
 
@@ -13,10 +14,16 @@ export default function EditUsersTable() {
     const [open, setOpen] = useState(false);
     const [showUserForm, setShowUserForm] = useState(false);
     const [user, setUser] = useState({})
+    const {setFormData} = useContext(FormDataContext)
     
     useEffect(() => {
         getUsers();
     }, [])
+
+    const closeForm = () => {
+        setShowUserForm(false);
+        setFormData({})
+    }
 
 
 
@@ -76,7 +83,7 @@ export default function EditUsersTable() {
             </Table>
         </TableContainer>
         <ConfirmationDialog open={open} message={confirmationMessage}/>
-        <EditUserForm open={showUserForm} onClose={() => setShowUserForm(false)} user={user}/>
+        <EditUserForm open={showUserForm} onClose={closeForm} user={user}/>
         </>
     )
 }

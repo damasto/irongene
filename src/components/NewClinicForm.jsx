@@ -11,7 +11,7 @@ import {
     DialogContent,
     Dialog
 } from "@mui/material";
-import { useContext, useState, useRef } from "react";
+import { useContext, useState, useRef, useEffect } from "react";
 import { FormDataContext } from "../context/formData.context";
 import { useNavigate } from "react-router-dom";
 import ConfirmationDialog from "./ConfirmationDialog";
@@ -33,10 +33,16 @@ export default function NewClinicForm({ open, onClose }) {
         "Photonic Retinal Augmentation Surgery (PRAS)"
     ];
 
+
     const [dialogOpen, setDialogOpen] = useState(false)
     const navigate = useNavigate();
     const dialogMessage = "Clinic has been created."
     const { handleChange, formData, errorMessage, setErrorMessage, setFormData, openButtonRef } = useContext(FormDataContext)
+
+
+    useEffect(() => {
+        console.log("clinic data", formData)
+    }, [formData])
 
     const handleClose = () => {
         setDialogOpen(false)
@@ -155,16 +161,16 @@ export default function NewClinicForm({ open, onClose }) {
                     </Select>
                 </FormControl>
                 <FormControl>
-                    <InputLabel id="procedure-label">Procedures</InputLabel>
+                    <InputLabel id="procedures-label">Procedures</InputLabel>
                     <Select
-                        labelId="procedure-label"
-                        name="procedure"
-                        value={formData.procedure || []}
+                        labelId="procedures-label"
+                        name="procedures"
+                        value={formData.procedures || []}
                         multiple
                         onChange={(e) =>
                             setFormData((prev) => ({
                                 ...prev,
-                                procedure: e.target.value,
+                                procedures: e.target.value,
                             }))
                         }
                         renderValue={(selected) => selected.join(', ')}

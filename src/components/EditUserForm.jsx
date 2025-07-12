@@ -123,7 +123,7 @@ export default function EditUserForm({open, onClose, user}) {
                         label="First Name"
                         name="firstName"
                         type="text"
-                        value={formData.firstName || user.firstName}
+                        value={formData.firstName ?? user.firstName ?? ""}
                         onChange={handleChange}
                         disabled={isDisabled}
 
