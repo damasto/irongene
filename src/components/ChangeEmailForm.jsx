@@ -103,7 +103,7 @@ export default function ChangeEmailForm({ setMessage, toggleDialog, hideForm, em
                 flexDirection: "column",
                 justifyContent: "flex-end",
                 alignItems: "flex-start",
-                margin: 0,
+                margin: "15px 0",
 
             }}
         >

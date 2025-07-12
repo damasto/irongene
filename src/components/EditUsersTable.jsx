@@ -57,14 +57,14 @@ export default function EditUsersTable() {
                             return (
                                 <TableCell
                                 key={key}
-                                sx={{borderRight: "1px solid #ccc"}}
+                                sx={{border: "1px solid #ccc"}}
                                 >{key}</TableCell>
                             )
                         }
                         )}
                         <TableCell
                         key="actions"
-                        sx={{borderRight: "1px solid #ccc"}}
+                        sx={{border: "1px solid #ccc"}}
                         >Actions</TableCell>
                     </TableRow>
                 </TableHead>

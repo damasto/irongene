@@ -23,7 +23,6 @@ export default function EditUserForm({open, onClose, user}) {
     const { handleChange, formData, errorMessage, setErrorMessage, openButtonRef } = useContext(FormDataContext)
     const { verifyEmail, verifyPassword, emailNotValid, pwdNotValid } = useContext(VerifyInputContext)
     const [isDisabled, setIsDisabled] = useState(false)
-    const textFields = ["firstName", "lastName", "email", "role", "password"]
     const roles = ["user", "admin"];
     const [dialogOpen, setDialogOpen] = useState(false)
     const dialogMessage = "User has been updated."
@@ -39,28 +38,25 @@ export default function EditUserForm({open, onClose, user}) {
         e.preventDefault();
         console.log(formData)
 
-        const textFieldsFilled = textFields.every((field) => { return typeof formData[field] === "string" && formData[field].trim() !== '' }
-        );
-
-        if (!verifyEmail(formData.email)) {
-            setErrorMessage(emailNotValid);
-            return
+        if (formData.email) {
+            if(!verifyEmail(formData.email)) {
+                setErrorMessage(emailNotValid);
+                return
+            }
         }
 
-        if (!verifyPassword(formData.password)) {
-            setErrorMessage(pwdNotValid);
-            return
+        if (formData.password) {
+            
+            if(!verifyPassword(formData.password)) {
+                setErrorMessage(pwdNotValid);
+                return
+            }
         }
 
-        if (!textFieldsFilled) {
-            setErrorMessage("Please fill out all fields");
-            return
-        }
-
-        if (textFieldsFilled) {
+       
             updateUser(user._id);
             return
-        }
+    
     }
 
     const updateUser = async (userId) => {
@@ -146,7 +142,7 @@ export default function EditUserForm({open, onClose, user}) {
                         disabled={isDisabled}
                     ></TextField>
                     <TextField
-                        label="Password"
+                        label="Change User Password"
                         name="password"
                         type="password"
                         value={formData.password || ""}

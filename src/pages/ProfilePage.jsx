@@ -28,7 +28,7 @@ export default function ProfilePage() {
     const navigate = useNavigate();
     const navbarHeight = 74;
     const title = "Delete Account"
-    const deleteMessage = "Are you sure you want to delete your account? This action cannot be undone." 
+    const deleteMessage = "Are you sure you want to delete your account? This action cannot be undone."
     const deleteAction = "delete"
 
     useEffect(() => {
@@ -107,75 +107,100 @@ export default function ProfilePage() {
                         <Box
                             display={"flex"}
                             gap={20}
+                            marginTop={"25px"}
                         >
-                            <Typography variant='body1'>Name: {profileData.firstName} </Typography>
-                            <Typography variant='body1'>Last name: {profileData.lastName}</Typography>
+                            <List disablePadding dense>
+                                <ListItem disableGutters>
+                                    <ListItemText
+                                        primary={"Name:"}
+                                        secondary={profileData.firstName}
+                                        slotProps={{ primary: { sx: { fontWeight: 600 } } }}
+                                    />
+                                </ListItem>
+                                <ListItem disableGutters>
+                                    <ListItemText
+                                        primary={"Last Name:"}
+                                        secondary={profileData.lastName}
+                                        slotProps={{ primary: { sx: { fontWeight: 600 } } }}
+                                    />
+                                </ListItem>
+                                <ListItem disableGutters>
+                                    <ListItemText
+                                        primary={"Email:"}
+                                        secondary={profileData.email}
+                                        slotProps={{ primary: { sx: { fontWeight: 600 } } }}
+                                    />
+                                </ListItem>
+                            </List>
                         </Box>
                         <Box
-                            display={"flex"}
-                            flexDirection={"column"}
-                            justifyContent={"flex-start"}
-                            alignItems={"flex-start"}
+                        sx={{
+                            display:"flex",
+                            flexDirection:"column",
+                            justifyContent: "center",
+                            alignItems:"center",
+                            margin: "40px 0"
+                        }}
                         >
-                            <Typography variant='body1'>email: {profileData.email} </Typography>
                             <Button onClick={toggleEmailForm}>Change email</Button>
                             {emailForm &&
                                 <ChangeEmailForm
-                                    email = {profileData.email}
+                                    email={profileData.email}
                                     setErrorMessage={(error) => setErrorMessage(error)}
                                     setMessage={(text) => setConfirmationMessage(text)}
                                     toggleDialog={(status) => setShowConfirmation(status)}
                                     hideForm={toggleEmailForm}
                                 />}
+
+                            <Button onClick={togglePasswordForm}>Change Password</Button>
+                            {changePasswordForm &&
+                                <ChangePwdForm
+                                    setErrorMessage={(error) => setErrorMessage(error)}
+                                    setMessage={(text) => setConfirmationMessage(text)}
+                                    toggleDialog={(status) => setShowConfirmation(status)}
+                                    hideForm={togglePasswordForm}
+                                />}
                         </Box>
-                        <Button onClick={togglePasswordForm}>Change Password</Button>
-                        {changePasswordForm &&
-                            <ChangePwdForm
-                                setErrorMessage={(error) => setErrorMessage(error)}
-                                setMessage={(text) => setConfirmationMessage(text)}
-                                toggleDialog={(status) => setShowConfirmation(status)}
-                                hideForm={togglePasswordForm}
-                            />}
                         <Typography onClick={() => { setShowDialog(true) }} variant='body2' color="error">Delete Account</Typography>
-                        <DeleteAccountDialog 
-                        open={showDialog} 
-                        onClose={() => { setShowDialog(false) }} 
-                        onConfirm={deleteUserAccount}
-                        title={title}
-                        message={deleteMessage}
-                        action={deleteAction}
-                         />
+                        <DeleteAccountDialog
+                            open={showDialog}
+                            onClose={() => { setShowDialog(false) }}
+                            onConfirm={deleteUserAccount}
+                            title={title}
+                            message={deleteMessage}
+                            action={deleteAction}
+                        />
                         <ConfirmationDialog open={showConfirmation} onClose={() => { setShowConfirmation(false) }} message={confirmationMessage} />
                     </Box>
                 )
                 break;
             case "My Bookings":
                 return (
-                     <>
-                                {bookingData.length > 0 ? (
-                                    <Box
-                                        display="flex"
-                                        flexDirection="column"
-                                        gap={4}
-                                        px={4}
-                                        py={6}
-                                        alignItems="center"
-                                    >
-                                        {bookingData.map((booking, i) => (
-                                            <BookingCard 
-                                            key={i} 
-                                            bookingData={booking}
-                                            onBookingUpdate={getBookingData} />
-                                        ))}
-                                    </Box>
-                                ) : (
-                                    <Typography variant="body1" color="text.secondary" align="center" sx={{ py: 6 }}>
-                                       You haven't any appointments booked
-                                    </Typography>
-                                )
-                                }
+                    <>
+                        {bookingData.length > 0 ? (
+                            <Box
+                                display="flex"
+                                flexDirection="column"
+                                gap={4}
+                                px={4}
+                                py={6}
+                                alignItems="center"
+                            >
+                                {bookingData.map((booking, i) => (
+                                    <BookingCard
+                                        key={i}
+                                        bookingData={booking}
+                                        onBookingUpdate={getBookingData} />
+                                ))}
+                            </Box>
+                        ) : (
+                            <Typography variant="body1" color="text.secondary" align="center" sx={{ py: 6 }}>
+                                You haven't any appointments booked
+                            </Typography>
+                        )
+                        }
 
-                            </>
+                    </>
                 )
                 break;
             default:

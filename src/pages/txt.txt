@@ -1,0 +1,23 @@
+<List disablePadding dense>
+                    <ListItem disableGutters>
+                        <ListItemText
+                            primary={"Name:"}
+                            secondary={profileData.firstName}
+                            slotProps={{ primary: { sx: { fontWeight: 600 } } }}
+                        />
+                    </ListItem>
+                    <ListItem disableGutters>
+                        <ListItemText
+                            primary={"Last Name:"}
+                            secondary={profileData.lastName}
+                            slotProps={{ primary: { sx: { fontWeight: 600 } } }}
+                        />
+                    </ListItem>
+                    <ListItem disableGutters>
+                        <ListItemText
+                            primary={"Email:"}
+                            secondary={profileData.email}
+                            slotProps={{ primary: { sx: { fontWeight: 600 } } }}
+                        />
+                    </ListItem>
+                </List>
