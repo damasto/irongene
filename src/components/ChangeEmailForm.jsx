@@ -101,13 +101,13 @@ export default function ChangeEmailForm({ setMessage, toggleDialog, hideForm, em
                 backgroundColor: '#f8f9fa',
                 display: "flex",
                 flexDirection: "column",
-                justifyContent: "flex-end",
-                alignItems: "flex-start",
+                justifyContent: "center",
+                alignItems: "center",
                 margin: "15px 0",
 
             }}
         >
-            <Typography variant="h5" gutterBottom>
+            <Typography variant="h5" gutterBottom textAlign={"center"}>
                 Change Email
             </Typography>
 

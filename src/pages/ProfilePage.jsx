@@ -9,7 +9,7 @@ import DeleteAccountDialog from '../components/DeleteAccountDialog';
 import ConfirmationDialog from '../components/ConfirmationDialog';
 import BookingCard from '../components/BookingCard';
 
-const sideBarItems = ["My Profile", "My Bookings", "Log Out"];
+const sideBarItems = ["My Profile", "My Bookings"];
 const drawerWidth = 220;
 
 export default function ProfilePage() {
@@ -97,6 +97,11 @@ export default function ProfilePage() {
         }
     }
 
+    const handleLogout = () => {
+        logOutUser();
+        navigate("/")
+    }
+
 
     const renderContent = () => {
         switch (selected) {
@@ -134,13 +139,13 @@ export default function ProfilePage() {
                             </List>
                         </Box>
                         <Box
-                        sx={{
-                            display:"flex",
-                            flexDirection:"column",
-                            justifyContent: "center",
-                            alignItems:"center",
-                            margin: "40px 0"
-                        }}
+                            sx={{
+                                display: "flex",
+                                flexDirection: "column",
+                                justifyContent: "center",
+                                alignItems: "center",
+                                margin: "40px 0"
+                            }}
                         >
                             <Button onClick={toggleEmailForm}>Change email</Button>
                             {emailForm &&
@@ -218,6 +223,9 @@ export default function ProfilePage() {
                 sx={{
                     width: drawerWidth,
                     flexShrink: 0,
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "space-between",
                     [`& .MuiDrawer-paper`]: {
                         width: drawerWidth,
                         boxSizing: 'border-box',
@@ -248,6 +256,16 @@ export default function ProfilePage() {
                             </ListItem>
                         ))}
                     </List>
+                </Box>
+                <Box sx={{ p: 2, marginTop: "100px"}}>
+                    <Button
+                        variant="outlined"
+                        color="error"
+                        fullWidth
+                        onClick={handleLogout} // 👈 your logout function here
+                    >
+                        Logout
+                    </Button>
                 </Box>
             </Drawer>
 

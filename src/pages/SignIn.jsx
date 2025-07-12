@@ -65,7 +65,14 @@ export default function SignIn({ onSwitchToSignUp }) {
   return (
     <Box
       component={"main"}
-      maxWidth={"md"}
+      width="100%"
+      height="550px"
+      sx={{
+        display:"flex",
+        justifyContent:"center",
+        alignItems:"center",
+      }}
+
     >
       <Paper
         elevation={3}
