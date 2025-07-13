@@ -19,7 +19,6 @@ A single page application based in the future, log in and book your appointment 
 >- D: Delete users, bookings 
 
 
-
 # Backlog
 - implement products and teams page functionalities
 - Shopping cart, checkout and payment
@@ -87,6 +86,6 @@ project-root/
 
 - [Presentation](https://docs.google.com/presentation/d/1d0hfJZPVnNRZYv-HnW_q43bWVexoFsWzaCw5zV3biEI/edit?usp=sharing)
 - [Github-repository Frontend](https://github.com/damasto/irongene)
-- [Github-repository Backend](https://github.com/angeleVG/magic-shop-backend)
+- [Github-repository Backend](https://github.com/damasto/backend-irongene)
 - [Deployment Frontend](https://irongene.netlify.app/)
 - [Deployment Backend](https://irongene-api.onrender.com)
