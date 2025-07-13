@@ -85,7 +85,6 @@ project-root/
 
 # Links
 
-- [Trello](https://trello.com/b/8tdMbXSx/muggles-magic-market)
 - [Presentation](https://docs.google.com/presentation/d/1d0hfJZPVnNRZYv-HnW_q43bWVexoFsWzaCw5zV3biEI/edit?usp=sharing)
 - [Github-repository Frontend](https://github.com/damasto/irongene)
 - [Github-repository Backend](https://github.com/angeleVG/magic-shop-backend)
