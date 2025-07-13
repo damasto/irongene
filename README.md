@@ -38,6 +38,7 @@ A single page application based in the future, log in and book your appointment 
 - Select specific procedure
 - View profile
 - Change password, email or delete account
+- Update, cancel or remove an existing booking
 - System administration for Admin - creat, edit, delete clinics, bookings, users
 
 # Installation
