@@ -8,7 +8,7 @@ import {
 } from '@mui/material';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import { Route, Link as RouterLink } from "react-router-dom"
+import { Route, Router, Link as RouterLink } from "react-router-dom"
 import { AuthContext } from '../context/auth.context';
 import { useContext, useState, useEffect } from 'react';
 import api from '../api/axios';
@@ -16,7 +16,7 @@ import api from '../api/axios';
 
 export default function NavBar() {
 
-  const {isAdmin} = useContext(AuthContext);
+  const { isAdmin } = useContext(AuthContext);
 
   return (
     <AppBar
@@ -38,9 +38,11 @@ export default function NavBar() {
 
         {/* Center: Navigation */}
         <Box sx={{ display: 'flex', gap: 4 }}>
-          <Button color="inherit" sx={{ fontWeight: 300 }}>
-            Products
-          </Button>
+          <RouterLink to="products" className='no-decoration'>
+            <Button color="inherit" sx={{ fontWeight: 300 }}>
+              Products
+            </Button>
+          </RouterLink>
           <RouterLink to="/clinics" className='no-decoration'>
             <Button color="inherit" sx={{ fontWeight: 300 }}>
               Clinics
@@ -51,7 +53,7 @@ export default function NavBar() {
           </Button>
           {isAdmin && (
             <RouterLink className='no-decoration' to="/system-administration">
-            <Button color="inherit" sx={{ fontWeight: 300 }}>System Administration</Button>
+              <Button color="inherit" sx={{ fontWeight: 300 }}>System Administration</Button>
             </RouterLink>
           )}
         </Box>

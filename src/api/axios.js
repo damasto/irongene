@@ -1,7 +1,8 @@
 import axios from "axios";
 
 const api = axios.create({
-    baseURL: "https://irongene-api.onrender.com",
+    //"https://irongene-api.onrender.com"
+    baseURL: "http://localhost:5005",
     headers: {
         "Content-Type": "application/json"
     }
