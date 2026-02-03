@@ -13,6 +13,8 @@ import {
 
 } from '@mui/material';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 import { CartContext } from '../context/cart.context';
 
 
@@ -21,7 +23,7 @@ export default function ProductDetailPage() {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true)
   const [product, setProduct] = useState(null);
-  const {addItem} = useContext(CartContext)
+  const {addItem, counter, decreaseAmount, increaseAmount} = useContext(CartContext)
   const { productId } = useParams();
   const { productTitle, price, _id, description } = product || {};
   const image = `/images/${_id}.png`
@@ -95,6 +97,13 @@ export default function ProductDetailPage() {
                   Price: {price}€
                 </Typography>
                 <CardActions>
+                  <IconButton onClick={() => decreaseAmount()}>
+                    <RemoveCircleOutlineIcon/>
+                  </IconButton>
+                  <Box>{counter}</Box>
+                  <IconButton onClick={() => increaseAmount()}>
+                    <AddCircleOutlineIcon/>
+                  </IconButton>
                   <IconButton onClick={() => addItem({_id, productTitle, price})} color="inherit" >
                     <ShoppingCartIcon/>
                   </IconButton>

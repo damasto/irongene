@@ -4,6 +4,7 @@
 
     function CartProviderWrapper (props) {
         const [shoppingCart, setShoppingCart] = useState([]);
+        const [counter, setCounter] = useState(1)
 
         const addItem = (item) => {
 
@@ -13,24 +14,34 @@
                 if (itemExists) {
                     return prevCart.map((cartItem) => {
                         if (cartItem._id === item._id) {
-                            return ({...cartItem, quantity: cartItem.quantity + 1 })
+                            return ({...cartItem, quantity: cartItem.quantity + counter })
                         } else {
                             return cartItem
                         }
                     })
                 } else {
-                    return ([...prevCart, {...item, quantity: 1}])
+                    return ([...prevCart, {...item, quantity: counter}])
                 }
             });
+
+            setCounter(1);
       
         };
+
+        const increaseAmount = () => {
+            setCounter(counter + 1);
+        }
+
+        const decreaseAmount = () => {
+            setCounter(counter - 1)
+        }
 
         useEffect(() => {
             console.log("Cart updated:", shoppingCart)
         }, [shoppingCart])
 
         return (
-            <CartContext.Provider value={{shoppingCart, addItem}}>
+            <CartContext.Provider value={{shoppingCart, addItem, counter, increaseAmount, decreaseAmount}}>
                 {props.children}
             </CartContext.Provider>
         )
