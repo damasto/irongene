@@ -23,7 +23,7 @@ export default function ProductDetailPage() {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true)
   const [product, setProduct] = useState(null);
-  const {addItem, counter, decreaseAmount, increaseAmount} = useContext(CartContext)
+  const {addItem, counter, setCounter, decreaseAmount, increaseAmount} = useContext(CartContext)
   const { productId } = useParams();
   const { productTitle, price, _id, description } = product || {};
   const image = `/images/${_id}.png`
@@ -97,11 +97,11 @@ export default function ProductDetailPage() {
                   Price: {price}€
                 </Typography>
                 <CardActions>
-                  <IconButton onClick={() => decreaseAmount()}>
+                  <IconButton onClick={() => decreaseAmount(setCounter, counter)}>
                     <RemoveCircleOutlineIcon/>
                   </IconButton>
                   <Box>{counter}</Box>
-                  <IconButton onClick={() => increaseAmount()}>
+                  <IconButton onClick={() => increaseAmount(setCounter, counter)}>
                     <AddCircleOutlineIcon/>
                   </IconButton>
                   <IconButton onClick={() => addItem({_id, productTitle, price})} color="inherit" >

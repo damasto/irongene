@@ -1,50 +1,68 @@
-    import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 
-    const CartContext = React.createContext();
+const CartContext = React.createContext();
 
-    function CartProviderWrapper (props) {
-        const [shoppingCart, setShoppingCart] = useState([]);
-        const [counter, setCounter] = useState(1)
+function CartProviderWrapper(props) {
+    const [shoppingCart, setShoppingCart] = useState([]);
+    const [counter, setCounter] = useState(1)
+    const [itemCounter, setItemCounter] = useState(null);
 
-        const addItem = (item) => {
+    const addItem = (item) => {
 
-            setShoppingCart((prevCart) => {
-                const itemExists = prevCart.find(cartItem => cartItem._id === item._id)
+        setShoppingCart((prevCart) => {
+            const itemExists = prevCart.find(cartItem => cartItem._id === item._id)
 
-                if (itemExists) {
-                    return prevCart.map((cartItem) => {
-                        if (cartItem._id === item._id) {
-                            return ({...cartItem, quantity: cartItem.quantity + counter })
-                        } else {
-                            return cartItem
-                        }
-                    })
-                } else {
-                    return ([...prevCart, {...item, quantity: counter}])
-                }
-            });
+            if (itemExists) {
+                return prevCart.map((cartItem) => {
+                    if (cartItem._id === item._id) {
+                        return ({ ...cartItem, quantity: cartItem.quantity + counter })
+                    } else {
+                        return cartItem
+                    }
+                })
+            } else {
+                return ([...prevCart, { ...item, quantity: counter }])
+            }
+        });
 
-            setCounter(1);
-      
-        };
 
-        const increaseAmount = () => {
-            setCounter(counter + 1);
-        }
 
-        const decreaseAmount = () => {
-            setCounter(counter - 1)
-        }
+        setCounter(1);
 
-        useEffect(() => {
-            console.log("Cart updated:", shoppingCart)
-        }, [shoppingCart])
+    };
 
-        return (
-            <CartContext.Provider value={{shoppingCart, addItem, counter, increaseAmount, decreaseAmount}}>
-                {props.children}
-            </CartContext.Provider>
-        )
+    const increaseAmount = (setItem, item) => {
+        setItem(item + 1);
     }
 
-    export {CartProviderWrapper, CartContext}
+    const decreaseAmount = (setItem, item) => {
+        if (item > 1) {
+            setItem(item - 1)
+        }
+    }
+
+    const countCartItems = () => {
+        if (shoppingCart.length > 0) {
+            const totalItems = shoppingCart.reduce((acc, item) => {
+                return acc + item.quantity
+            }, 0)
+
+            setItemCounter(totalItems)
+        }
+    }
+
+    useEffect(() => {
+       
+        countCartItems();
+
+        console.log("Cart updated:", shoppingCart)
+    }, [shoppingCart])
+
+    return (
+        <CartContext.Provider value={{ shoppingCart, addItem, counter, setCounter, increaseAmount, decreaseAmount, itemCounter }}>
+            {props.children}
+        </CartContext.Provider>
+    )
+}
+
+export { CartProviderWrapper, CartContext }

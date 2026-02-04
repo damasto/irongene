@@ -5,6 +5,7 @@ import {
   Button,
   IconButton,
   Box,
+  Badge,
 } from '@mui/material';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
@@ -12,11 +13,13 @@ import { Route, Router, Link as RouterLink } from "react-router-dom"
 import { AuthContext } from '../context/auth.context';
 import { useContext, useState, useEffect } from 'react';
 import api from '../api/axios';
+import { CartContext } from '../context/cart.context';
 
 
 export default function NavBar() {
 
   const { isAdmin } = useContext(AuthContext);
+  const { itemCounter} = useContext(CartContext)
 
   return (
     <AppBar
@@ -67,7 +70,9 @@ export default function NavBar() {
           </RouterLink>
 
           <IconButton color="inherit">
-            <ShoppingCartIcon />
+            <Badge badgeContent={itemCounter} color='error'>
+              <ShoppingCartIcon />
+            </Badge>
           </IconButton>
         </Box>
       </Toolbar>
