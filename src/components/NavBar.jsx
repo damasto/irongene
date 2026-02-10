@@ -19,7 +19,7 @@ import { CartContext } from '../context/cart.context';
 export default function NavBar() {
 
   const { isAdmin } = useContext(AuthContext);
-  const { itemCounter} = useContext(CartContext)
+  const { itemCounter } = useContext(CartContext)
 
   return (
     <AppBar
@@ -69,11 +69,13 @@ export default function NavBar() {
             </IconButton>
           </RouterLink>
 
-          <IconButton color="inherit">
-            <Badge badgeContent={itemCounter} color='error'>
-              <ShoppingCartIcon />
-            </Badge>
-          </IconButton>
+          <RouterLink to="/shopping-cart">
+            <IconButton color="inherit">
+              <Badge badgeContent={itemCounter} color='error'>
+                <ShoppingCartIcon />
+              </Badge>
+            </IconButton>
+          </RouterLink>
         </Box>
       </Toolbar>
     </AppBar>

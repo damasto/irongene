@@ -20,6 +20,7 @@ import NotFoundPage from './pages/NotFoundPage'
 import EditUsersPage from './components/EditUsersTable'
 import ProductsPage from './pages/ProductsPage'
 import ProductDetailPage from './pages/ProductDetailPage'
+import ShoppingCartPage from './pages/ShoppingCartPage'
 
 
 
@@ -41,6 +42,7 @@ function App() {
     <Route path="*" element={<NotFoundPage/>}></Route>
     <Route path="/products" element={<ProductsPage/>}></Route>
     <Route path="/products/:productId" element={<ProductDetailPage/>}></Route>
+    <Route path="/shopping-cart" element={<ShoppingCartPage/>}></Route>
     <Route path="/system-administration" element={<IsAdmin><SystemAdminPage/></IsAdmin>}></Route>
    </Routes>
    <Footer/>
