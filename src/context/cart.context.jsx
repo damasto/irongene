@@ -51,6 +51,12 @@ function CartProviderWrapper(props) {
         }
     }
 
+    const removeItem = (item) => {
+        setShoppingCart((prevCart) => {
+            return prevCart.filter((cartItem) => cartItem._id !== item._id)
+        })
+    }
+
     useEffect(() => {
        
         countCartItems();
@@ -59,7 +65,7 @@ function CartProviderWrapper(props) {
     }, [shoppingCart])
 
     return (
-        <CartContext.Provider value={{ shoppingCart, addItem, counter, setCounter, increaseAmount, decreaseAmount, itemCounter }}>
+        <CartContext.Provider value={{ shoppingCart, addItem, counter, setCounter, increaseAmount, decreaseAmount, itemCounter, removeItem }}>
             {props.children}
         </CartContext.Provider>
     )
